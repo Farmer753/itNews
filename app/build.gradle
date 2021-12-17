@@ -35,4 +35,7 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:5.0.1'
     implementation 'com.github.stephanenicolas.toothpick:toothpick-runtime:3.1.0'
     annotationProcessor 'com.github.stephanenicolas.toothpick:toothpick-compiler:3.1.0'
+    implementation "com.github.moxy-community:moxy-androidx:2.2.2"
+    implementation "com.github.moxy-community:moxy:2.2.2"
+    annotationProcessor "com.github.moxy-community:moxy-compiler:2.2.2"
 }
