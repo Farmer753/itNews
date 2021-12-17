@@ -1,7 +1,12 @@
 package ru.dpwg.itnews;
 
 import androidx.appcompat.app.AppCompatActivity;
+import moxy.MvpAppCompatActivity;
+import moxy.presenter.InjectPresenter;
+import moxy.presenter.ProvidePresenter;
 import ru.dpwg.itnews.di.Di;
+import ru.dpwg.itnews.mvp.presenter.MainActivityPresenter;
+import ru.dpwg.itnews.mvp.view.MainActivityView;
 import timber.log.Timber;
 import toothpick.Toothpick;
 
@@ -10,10 +15,13 @@ import android.os.Bundle;
 
 import javax.inject.Inject;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends MvpAppCompatActivity implements MainActivityView {
 
     @Inject
     SharedPreferences sharedPreferences;
+
+    @InjectPresenter
+    MainActivityPresenter mainActivityPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +36,13 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Timber.d("is not First Launch");
         }
+        mainActivityPresenter.test();
     }
+
+    @ProvidePresenter
+    MainActivityPresenter getPresenter() {
+        return Toothpick.openScope(Di.APP_SCOPE).getInstance(MainActivityPresenter.class);
+    }
+
 
 }
