@@ -16,7 +16,15 @@ public class MainActivityPresenter extends MvpPresenter<MainActivityView> {
         this.sharedPreferences = sharedPreferences;
     }
 
-    public void test(){
-        Timber.d("работает");
+    @Override
+    protected void onFirstViewAttach() {
+        super.onFirstViewAttach();
+        boolean isFirstLaunch = sharedPreferences.getBoolean("isFirstLaunch", true);
+        if (isFirstLaunch) {
+            Timber.d("is First Launch");
+            sharedPreferences.edit().putBoolean("isFirstLaunch", false).apply();
+        } else {
+            Timber.d("is not First Launch");
+        }
     }
 }

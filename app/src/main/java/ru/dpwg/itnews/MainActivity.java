@@ -29,14 +29,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
         setContentView(R.layout.activity_main);
         Timber.d("что угодно");
         Toothpick.openScope(Di.APP_SCOPE).inject(this);
-        boolean isFirstLaunch = sharedPreferences.getBoolean("isFirstLaunch", true);
-        if (isFirstLaunch) {
-            Timber.d("is First Launch");
-            sharedPreferences.edit().putBoolean("isFirstLaunch", false).apply();
-        } else {
-            Timber.d("is not First Launch");
-        }
-        mainActivityPresenter.test();
     }
 
     @ProvidePresenter
