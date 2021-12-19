@@ -11,6 +11,9 @@ import timber.log.Timber;
 
 public class OnboardingPresenter extends MvpPresenter<OnboardingView> {
 
+    @Inject
+    public OnboardingPresenter() {
+    }
 
     public void onNextButtonClick() {
         Timber.d("onNextButtonClick");

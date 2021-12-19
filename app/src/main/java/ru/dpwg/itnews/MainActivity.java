@@ -13,12 +13,20 @@ import toothpick.Toothpick;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import com.github.terrakok.cicerone.Navigator;
+import com.github.terrakok.cicerone.NavigatorHolder;
+import com.github.terrakok.cicerone.androidx.AppNavigator;
+
 import javax.inject.Inject;
 
 public class MainActivity extends MvpAppCompatActivity implements MainActivityView {
 
     @Inject
     SharedPreferences sharedPreferences;
+
+    @Inject
+    NavigatorHolder navigatorHolder;
+    Navigator navigator = new AppNavigator(this, R.id.container);
 
     @InjectPresenter
     MainActivityPresenter mainActivityPresenter;
@@ -36,5 +44,16 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
         return Toothpick.openScope(Di.APP_SCOPE).getInstance(MainActivityPresenter.class);
     }
 
+    @Override
+    protected void onPause() {
+        navigatorHolder.removeNavigator();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        navigatorHolder.setNavigator(navigator);
+    }
 
 }

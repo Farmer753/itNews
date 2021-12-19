@@ -3,6 +3,7 @@ package ru.dpwg.itnews;
 import android.app.Application;
 
 import ru.dpwg.itnews.di.module.ApplicationModule;
+import ru.dpwg.itnews.di.module.NavigationModule;
 import ru.dpwg.itnews.di.module.StorageModule;
 import timber.log.Timber;
 import toothpick.Toothpick;
@@ -18,7 +19,8 @@ public class ItNewsApp extends Application {
         Toothpick.openScope(APP_SCOPE)
                 .installModules(
                         new ApplicationModule(this),
-                        new StorageModule(this)
+                        new StorageModule(this),
+                        new NavigationModule()
                 );
     }
 }
