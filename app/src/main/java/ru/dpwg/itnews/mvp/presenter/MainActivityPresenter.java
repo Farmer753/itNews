@@ -32,6 +32,7 @@ public class MainActivityPresenter extends MvpPresenter<MainActivityView> {
             router.newRootScreen(new Screens.OnboardingScreen());
         } else {
             Timber.d("is not First Launch");
+            router.newRootScreen(new Screens.ArticleListScreen());
         }
     }
 }
