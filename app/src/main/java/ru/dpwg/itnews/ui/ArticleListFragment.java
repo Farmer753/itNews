@@ -10,22 +10,28 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import moxy.MvpAppCompatFragment;
 import moxy.presenter.ProvidePresenter;
 import ru.dpwg.itnews.R;
 import ru.dpwg.itnews.di.Di;
 import ru.dpwg.itnews.mvp.presenter.ArticleListPresenter;
 import ru.dpwg.itnews.mvp.view.ArticleListView;
+import timber.log.Timber;
 import toothpick.Toothpick;
 
 public class ArticleListFragment extends MvpAppCompatFragment implements ArticleListView {
     @Inject
     ArticleListPresenter articleListPresenter;
 
+    Toolbar toolbar;
+
     @ProvidePresenter
     ArticleListPresenter getArticleListPresenter() {
         return Toothpick.openScope(Di.APP_SCOPE).getInstance(ArticleListPresenter.class);
     }
+
     @Nullable
     @Override
     public View onCreateView(
@@ -34,5 +40,22 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
             @Nullable Bundle savedInstanceState
     ) {
         return inflater.inflate(R.layout.fragment_article_list, container, false);
+    }
+
+    @Override
+    public void onViewCreated(
+            @NonNull View view,
+            @Nullable Bundle savedInstanceState
+    ) {
+        super.onViewCreated(view, savedInstanceState);
+
+        toolbar = view.findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.menu_profile);
+        toolbar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.profile) {
+                Timber.d("Профиль нажат");
+            }
+            return false;
+        });
     }
 }
