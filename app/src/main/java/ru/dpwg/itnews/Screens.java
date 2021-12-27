@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentFactory;
 import ru.dpwg.itnews.ui.ArticleListFragment;
+import ru.dpwg.itnews.ui.LoginFragment;
 import ru.dpwg.itnews.ui.OnboardingFragment;
 
 public class Screens {
@@ -39,6 +40,27 @@ public class Screens {
         @Override
         public Fragment createFragment(@NotNull FragmentFactory fragmentFactory) {
             return new ArticleListFragment();
+        }
+
+        @Override
+        public boolean getClearContainer() {
+            return true;
+        }
+
+        @NotNull
+        @Override
+        public String getScreenKey() {
+            return this.getClass().getName();
+        }
+    }
+
+    public static class LoginScreen implements FragmentScreen {
+
+
+        @NotNull
+        @Override
+        public Fragment createFragment(@NotNull FragmentFactory fragmentFactory) {
+            return new LoginFragment();
         }
 
         @Override

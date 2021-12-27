@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import moxy.MvpAppCompatFragment;
+import moxy.presenter.InjectPresenter;
 import moxy.presenter.ProvidePresenter;
 import ru.dpwg.itnews.R;
 import ru.dpwg.itnews.di.Di;
@@ -22,7 +23,7 @@ import timber.log.Timber;
 import toothpick.Toothpick;
 
 public class ArticleListFragment extends MvpAppCompatFragment implements ArticleListView {
-    @Inject
+    @InjectPresenter
     ArticleListPresenter articleListPresenter;
 
     Toolbar toolbar;
@@ -54,6 +55,8 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
         toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.profile) {
                 Timber.d("Профиль нажат");
+                articleListPresenter.profileClick();
+
             }
             return false;
         });
