@@ -4,4 +4,6 @@
     <string name="next">Продолжить</string>
     <string name="profile">Профиль</string>
     <string name="logout">Logout</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
 </resources>
