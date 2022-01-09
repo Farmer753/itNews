@@ -1,6 +1,8 @@
 package ru.dpwg.itnews.ui;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +34,7 @@ public class LoginFragment extends MvpAppCompatFragment implements LoginView {
     View progressView;
 
     @InjectPresenter
-    LoginPresenter loginPresenter;
+    LoginPresenter presenter;
 
     @ProvidePresenter
     LoginPresenter getLoginPresenter() {
@@ -57,6 +59,45 @@ public class LoginFragment extends MvpAppCompatFragment implements LoginView {
         emailEditText = view.findViewById(R.id.emailEditText);
         passwordEditText = view.findViewById(R.id.passwordEditText);
         progressView = view.findViewById(R.id.progressView);
+
+        emailEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                presenter.onEmailChange(s.toString());
+            }
+        });
+
+        passwordEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                presenter.onPasswordChange(s.toString());
+            }
+        });
         buttonLogin.setOnClickListener(v -> Timber.d("Кнопка нажата"));
+    }
+
+    @Override
+    public void enableLoginButton(boolean formValid) {
+        buttonLogin.setEnabled(formValid);
     }
 }
