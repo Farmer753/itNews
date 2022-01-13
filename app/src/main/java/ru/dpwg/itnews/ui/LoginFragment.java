@@ -93,7 +93,7 @@ public class LoginFragment extends MvpAppCompatFragment implements LoginView {
                 presenter.onPasswordChange(s.toString());
             }
         });
-        buttonLogin.setOnClickListener(v -> Timber.d("Кнопка нажата"));
+        buttonLogin.setOnClickListener(v -> presenter.onLoginClick());
     }
 
     @Override

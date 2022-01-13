@@ -5,16 +5,23 @@ import android.util.Patterns;
 
 import javax.inject.Inject;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Scheduler;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import moxy.MvpPresenter;
+import ru.dpwg.itnews.domain.SessionRepository;
+import ru.dpwg.itnews.domain.TokenResponse;
 import ru.dpwg.itnews.mvp.view.LoginView;
 import timber.log.Timber;
 
 public class LoginPresenter extends MvpPresenter<LoginView> {
     String password;
     String email;
+    private SessionRepository sessionRepository;
 
     @Inject
-    public LoginPresenter() {
+    public LoginPresenter(SessionRepository sessionRepository) {
+        this.sessionRepository = sessionRepository;
     }
 
     public void onPasswordChange(String password) {
@@ -34,5 +41,14 @@ public class LoginPresenter extends MvpPresenter<LoginView> {
     public void onEmailChange(String email) {
         this.email = email;
         checkForm();
+    }
+
+    public void onLoginClick() {
+        Timber.d("Кнопка нажата");
+        sessionRepository
+                .login(email, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(tokenResponse -> {Timber.d(tokenResponse.accessToken);}, throwable -> {});
     }
 }
