@@ -7,4 +7,11 @@ public interface LoginView extends MvpView {
 
     @AddToEndSingle
     void enableLoginButton(boolean formValid);
+
+    @AddToEndSingle
+    void showMessage(String message);
+
+    @AddToEndSingle
+    void showProgress(boolean show);
+
 }

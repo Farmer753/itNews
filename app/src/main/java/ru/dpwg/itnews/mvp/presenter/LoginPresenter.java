@@ -33,9 +33,9 @@ public class LoginPresenter extends MvpPresenter<LoginView> {
         boolean formValid = !TextUtils.isEmpty(email)
                 && Patterns.EMAIL_ADDRESS.matcher(email).matches()
                 && !TextUtils.isEmpty(password)
-                && password.length()>=8;
+                && password.length() >= 8;
         getViewState().enableLoginButton(formValid);
-        Timber.d("password %s, email %s",password ,email);
+        Timber.d("password %s, email %s", password, email);
     }
 
     public void onEmailChange(String email) {
@@ -49,6 +49,17 @@ public class LoginPresenter extends MvpPresenter<LoginView> {
                 .login(email, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(tokenResponse -> {Timber.d(tokenResponse.accessToken);}, throwable -> {});
+                .doOnSubscribe(disposable -> getViewState().showProgress(true))
+                .doOnEvent((tokenResponse, throwable) -> getViewState().showProgress(false))
+                .subscribe(
+                        tokenResponse -> {
+                            Timber.d(tokenResponse.accessToken);
+                        },
+                        error -> {
+                            Timber.e(error);
+                            getViewState().showMessage(error.getMessage());
+                        }
+                );
+
     }
 }

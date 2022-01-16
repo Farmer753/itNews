@@ -1,5 +1,7 @@
 package ru.dpwg.itnews.data;
 
+import java.util.Random;
+
 import javax.inject.Inject;
 
 import io.reactivex.rxjava3.core.Single;
@@ -19,7 +21,14 @@ public class SessionRepositoryImpl implements SessionRepository {
             TokenResponse tokenResponse = new TokenResponse();
             tokenResponse.accessToken = "строчка accessToken";
             tokenResponse.refreshToken = "строчка refreshToken";
-            emitter.onSuccess(tokenResponse);
+            Random random = new Random();
+            if (random.nextBoolean()){
+                emitter.onSuccess(tokenResponse);
+            }
+            else {
+                emitter.onError(new IllegalStateException("сообщение об ошибке"));
+            }
+
         });
     }
 

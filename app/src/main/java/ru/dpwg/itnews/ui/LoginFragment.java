@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -99,5 +100,20 @@ public class LoginFragment extends MvpAppCompatFragment implements LoginView {
     @Override
     public void enableLoginButton(boolean formValid) {
         buttonLogin.setEnabled(formValid);
+    }
+
+    @Override
+    public void showMessage(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showProgress(boolean show) {
+        if (show){
+            progressView.setVisibility(View.VISIBLE);
+        }
+        else {
+            progressView.setVisibility(View.GONE);
+        }
     }
 }
