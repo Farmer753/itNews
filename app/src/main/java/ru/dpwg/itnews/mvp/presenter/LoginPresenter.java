@@ -54,6 +54,8 @@ public class LoginPresenter extends MvpPresenter<LoginView> {
                 .subscribe(
                         tokenResponse -> {
                             Timber.d(tokenResponse.accessToken);
+                            sessionRepository.saveAccessToken(tokenResponse.accessToken);
+                            sessionRepository.saveRefreshToken(tokenResponse.refreshToken);
                         },
                         error -> {
                             Timber.e(error);

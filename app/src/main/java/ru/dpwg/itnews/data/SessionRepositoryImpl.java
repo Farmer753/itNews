@@ -1,5 +1,7 @@
 package ru.dpwg.itnews.data;
 
+import android.content.SharedPreferences;
+
 import java.util.Random;
 
 import javax.inject.Inject;
@@ -10,8 +12,11 @@ import ru.dpwg.itnews.domain.TokenResponse;
 
 public class SessionRepositoryImpl implements SessionRepository {
 
+    private SharedPreferences sharedPreferences;
+
     @Inject
-    public SessionRepositoryImpl() {
+    public SessionRepositoryImpl(SharedPreferences sharedPreferences) {
+        this.sharedPreferences = sharedPreferences;
     }
 
     @Override
@@ -22,10 +27,9 @@ public class SessionRepositoryImpl implements SessionRepository {
             tokenResponse.accessToken = "строчка accessToken";
             tokenResponse.refreshToken = "строчка refreshToken";
             Random random = new Random();
-            if (random.nextBoolean()){
+            if (random.nextBoolean()) {
                 emitter.onSuccess(tokenResponse);
-            }
-            else {
+            } else {
                 emitter.onError(new IllegalStateException("сообщение об ошибке"));
             }
 
@@ -34,21 +38,24 @@ public class SessionRepositoryImpl implements SessionRepository {
 
     @Override
     public String getRefreshToken() {
-        return null;
+
+        return sharedPreferences.getString("refreshToken", null);
     }
 
     @Override
     public void saveRefreshToken(String refreshToken) {
-
+        sharedPreferences.edit().putString("refreshToken", refreshToken).apply();
     }
 
     @Override
     public String getAccessToken() {
-        return null;
+
+        return sharedPreferences.getString("accessToken", null);
+
     }
 
     @Override
     public void saveAccessToken(String accessToken) {
-
+        sharedPreferences.edit().putString("accessToken", accessToken).apply();
     }
 }
