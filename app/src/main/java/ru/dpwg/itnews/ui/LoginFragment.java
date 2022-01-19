@@ -109,10 +109,9 @@ public class LoginFragment extends MvpAppCompatFragment implements LoginView {
 
     @Override
     public void showProgress(boolean show) {
-        if (show){
+        if (show) {
             progressView.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             progressView.setVisibility(View.GONE);
         }
     }

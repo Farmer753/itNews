@@ -53,11 +53,8 @@ public class ProfileFragment extends MvpAppCompatFragment implements ProfileView
     ) {
         super.onViewCreated(view, savedInstanceState);
         logout = view.findViewById(R.id.buttonLogout);
+        logout.setOnClickListener(v -> profilePresenter.onLogoutClick());
 
     }
 
-    @Override
-    public void enableLogoutButton(boolean logout) {
-
-    }
 }

@@ -1,23 +1,28 @@
 package ru.dpwg.itnews.mvp.presenter;
 
-import android.widget.Button;
+import com.github.terrakok.cicerone.Router;
 
 import javax.inject.Inject;
 
 import moxy.MvpPresenter;
-import ru.dpwg.itnews.mvp.view.LoginView;
+import ru.dpwg.itnews.domain.SessionRepository;
 import ru.dpwg.itnews.mvp.view.ProfileView;
-import timber.log.Timber;
 
 public class ProfilePresenter extends MvpPresenter<ProfileView> {
-    Button logout;
+
+    private SessionRepository sessionRepository;
+    private Router router;
 
     @Inject
-    public ProfilePresenter() {
+    public ProfilePresenter(SessionRepository sessionRepository, Router router) {
+        this.sessionRepository = sessionRepository;
+        this.router = router;
     }
 
     public void onLogoutClick() {
-
+        sessionRepository.saveRefreshToken(null);
+        sessionRepository.saveAccessToken(null);
+        router.exit();
     }
 
 }
