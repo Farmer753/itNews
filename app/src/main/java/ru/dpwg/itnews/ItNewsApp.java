@@ -3,6 +3,7 @@ package ru.dpwg.itnews;
 import android.app.Application;
 
 import ru.dpwg.itnews.di.module.ApplicationModule;
+import ru.dpwg.itnews.di.module.DomainModule;
 import ru.dpwg.itnews.di.module.NavigationModule;
 import ru.dpwg.itnews.di.module.StorageModule;
 import timber.log.Timber;
@@ -20,7 +21,8 @@ public class ItNewsApp extends Application {
                 .installModules(
                         new ApplicationModule(this),
                         new StorageModule(this),
-                        new NavigationModule()
+                        new NavigationModule(),
+                        new DomainModule()
                 );
     }
 }

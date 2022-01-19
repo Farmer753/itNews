@@ -2,4 +2,9 @@
     <string name="app_name">IT news</string>
     <string name="onboarding">Приветсвенный экран</string>
     <string name="next">Продолжить</string>
+    <string name="profile">Профиль</string>
+    <string name="logout">Logout</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="login">Login</string>
 </resources>

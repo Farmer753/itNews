@@ -1,6 +1,13 @@
 package ru.dpwg.itnews;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+
+import com.github.terrakok.cicerone.Navigator;
+import com.github.terrakok.cicerone.NavigatorHolder;
+import com.github.terrakok.cicerone.androidx.AppNavigator;
+
+import javax.inject.Inject;
+
 import moxy.MvpAppCompatActivity;
 import moxy.presenter.InjectPresenter;
 import moxy.presenter.ProvidePresenter;
@@ -10,19 +17,8 @@ import ru.dpwg.itnews.mvp.view.MainActivityView;
 import timber.log.Timber;
 import toothpick.Toothpick;
 
-import android.content.SharedPreferences;
-import android.os.Bundle;
-
-import com.github.terrakok.cicerone.Navigator;
-import com.github.terrakok.cicerone.NavigatorHolder;
-import com.github.terrakok.cicerone.androidx.AppNavigator;
-
-import javax.inject.Inject;
-
 public class MainActivity extends MvpAppCompatActivity implements MainActivityView {
 
-    @Inject
-    SharedPreferences sharedPreferences;
 
     @Inject
     NavigatorHolder navigatorHolder;
