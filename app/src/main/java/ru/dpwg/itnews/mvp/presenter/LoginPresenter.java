@@ -3,14 +3,15 @@ package ru.dpwg.itnews.mvp.presenter;
 import android.text.TextUtils;
 import android.util.Patterns;
 
+import com.github.terrakok.cicerone.Router;
+
 import javax.inject.Inject;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import moxy.MvpPresenter;
+import ru.dpwg.itnews.Screens;
 import ru.dpwg.itnews.domain.SessionRepository;
-import ru.dpwg.itnews.domain.TokenResponse;
 import ru.dpwg.itnews.mvp.view.LoginView;
 import timber.log.Timber;
 
@@ -18,10 +19,13 @@ public class LoginPresenter extends MvpPresenter<LoginView> {
     String password;
     String email;
     private SessionRepository sessionRepository;
+    private Router router;
+
 
     @Inject
-    public LoginPresenter(SessionRepository sessionRepository) {
+    public LoginPresenter(SessionRepository sessionRepository, Router router) {
         this.sessionRepository = sessionRepository;
+        this.router = router;
     }
 
     public void onPasswordChange(String password) {
@@ -56,6 +60,7 @@ public class LoginPresenter extends MvpPresenter<LoginView> {
                             Timber.d(tokenResponse.accessToken);
                             sessionRepository.saveAccessToken(tokenResponse.accessToken);
                             sessionRepository.saveRefreshToken(tokenResponse.refreshToken);
+                            router.replaceScreen(new Screens.ProfileScreen());
                         },
                         error -> {
                             Timber.e(error);
