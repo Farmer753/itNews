@@ -5,8 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import androidx.annotation.NonNull;
 
@@ -30,6 +34,7 @@ public class ProfileFragment extends MvpAppCompatFragment implements ProfileView
     TextView emailTextView;
     TextView nameTextView;
     Button buttonRetry;
+    ImageView iconImageView;
 
 
     @InjectPresenter
@@ -61,6 +66,7 @@ public class ProfileFragment extends MvpAppCompatFragment implements ProfileView
         emailTextView = view.findViewById(R.id.emailTextView);
         nameTextView = view.findViewById(R.id.nameTextView);
         progressView = view.findViewById(R.id.progressView);
+        iconImageView = view.findViewById(R.id.iconImageView);
         buttonRetry = view.findViewById(R.id.buttonRetry);
         buttonRetry.setOnClickListener(v -> profilePresenter.loadUser());
 
@@ -84,6 +90,10 @@ public class ProfileFragment extends MvpAppCompatFragment implements ProfileView
     public void showUser(NwUser nwUser) {
         emailTextView.setText(nwUser.email);
         nameTextView.setText(nwUser.fullName);
+        Glide.with(iconImageView)
+                .load(nwUser.avatar)
+                .apply(RequestOptions.circleCropTransform())
+                .into(iconImageView);
     }
 
     @Override
