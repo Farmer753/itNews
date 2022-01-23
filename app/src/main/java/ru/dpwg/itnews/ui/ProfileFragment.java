@@ -29,6 +29,7 @@ public class ProfileFragment extends MvpAppCompatFragment implements ProfileView
     View progressView;
     TextView emailTextView;
     TextView nameTextView;
+    Button buttonRetry;
 
 
     @InjectPresenter
@@ -60,6 +61,8 @@ public class ProfileFragment extends MvpAppCompatFragment implements ProfileView
         emailTextView = view.findViewById(R.id.emailTextView);
         nameTextView = view.findViewById(R.id.nameTextView);
         progressView = view.findViewById(R.id.progressView);
+        buttonRetry = view.findViewById(R.id.buttonRetry);
+        buttonRetry.setOnClickListener(v -> profilePresenter.loadUser());
 
     }
 
@@ -82,4 +85,15 @@ public class ProfileFragment extends MvpAppCompatFragment implements ProfileView
         emailTextView.setText(nwUser.email);
         nameTextView.setText(nwUser.fullName);
     }
+
+    @Override
+    public void showButtonRetry(boolean show) {
+        if (show) {
+            buttonRetry.setVisibility(View.VISIBLE);
+        } else {
+            buttonRetry.setVisibility(View.GONE);
+        }
+    }
+
+
 }

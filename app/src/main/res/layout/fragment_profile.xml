@@ -70,6 +70,16 @@
         android:text="@string/logout"
         android:id="@+id/buttonLogout"/>
 
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="16dp"
+        android:text="@string/retry"
+        android:id="@+id/buttonRetry"
+        android:visibility="gone"/>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -87,5 +97,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
     </FrameLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

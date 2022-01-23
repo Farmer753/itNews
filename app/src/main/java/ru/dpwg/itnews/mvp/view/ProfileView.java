@@ -14,4 +14,7 @@ public interface ProfileView extends MvpView {
 
     @AddToEndSingle
     void showUser(NwUser nwUser);
+
+    @AddToEndSingle
+    void showButtonRetry(boolean show);
 }

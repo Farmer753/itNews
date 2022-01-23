@@ -35,11 +35,19 @@ public class ProfilePresenter extends MvpPresenter<ProfileView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
+        loadUser();
+
+    }
+
+    public void loadUser() {
         userRepository
                 .loadUser()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgress(true))
+                .doOnSubscribe(disposable -> {
+                    getViewState().showProgress(true);
+                    getViewState().showButtonRetry(false);
+                })
                 .doOnEvent((tokenResponse, throwable) -> getViewState().showProgress(false))
                 .subscribe(
                         nwUser -> {
@@ -49,8 +57,10 @@ public class ProfilePresenter extends MvpPresenter<ProfileView> {
                         error -> {
                             Timber.e(error);
                             getViewState().showMessage(error.getMessage());
+                            getViewState().showButtonRetry(true);
                         }
                 );
+
 
     }
 }
