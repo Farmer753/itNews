@@ -26,4 +26,8 @@ public class ArticleListPresenter extends MvpPresenter<ArticleListView> {
             router.navigateTo(new Screens.ProfileScreen());
         }
     }
+
+    public void articleClick(){
+        router.navigateTo(new Screens.ArticleScreen());
+    }
 }

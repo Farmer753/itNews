@@ -1,11 +1,13 @@
 package ru.dpwg.itnews;
 
+import com.github.terrakok.cicerone.Screen;
 import com.github.terrakok.cicerone.androidx.FragmentScreen;
 
 import org.jetbrains.annotations.NotNull;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentFactory;
+import ru.dpwg.itnews.ui.ArticleFragment;
 import ru.dpwg.itnews.ui.ArticleListFragment;
 import ru.dpwg.itnews.ui.LoginFragment;
 import ru.dpwg.itnews.ui.OnboardingFragment;
@@ -83,6 +85,25 @@ public class Screens {
         @Override
         public Fragment createFragment(@NotNull FragmentFactory fragmentFactory) {
             return new ProfileFragment();
+        }
+
+        @Override
+        public boolean getClearContainer() {
+            return true;
+        }
+
+        @NotNull
+        @Override
+        public String getScreenKey() {
+            return this.getClass().getName();
+        }
+    }
+
+    public static class ArticleScreen implements FragmentScreen {
+        @NotNull
+        @Override
+        public Fragment createFragment(@NotNull FragmentFactory fragmentFactory) {
+            return new ArticleFragment();
         }
 
         @Override

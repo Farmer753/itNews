@@ -4,10 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -17,20 +18,21 @@ import moxy.presenter.ProvidePresenter;
 import ru.dpwg.itnews.R;
 import ru.dpwg.itnews.di.Di;
 import ru.dpwg.itnews.mvp.presenter.ArticleListPresenter;
+import ru.dpwg.itnews.mvp.presenter.ArticlePresenter;
 import ru.dpwg.itnews.mvp.view.ArticleListView;
+import ru.dpwg.itnews.mvp.view.ArticleView;
 import timber.log.Timber;
 import toothpick.Toothpick;
 
-public class ArticleListFragment extends MvpAppCompatFragment implements ArticleListView {
+public class ArticleFragment extends MvpAppCompatFragment implements ArticleView {
     @InjectPresenter
-    ArticleListPresenter presenter;
+    ArticlePresenter articlePresenter;
 
     Toolbar toolbar;
-    TextView textView;
 
     @ProvidePresenter
-    ArticleListPresenter getPresenter() {
-        return Toothpick.openScope(Di.APP_SCOPE).getInstance(ArticleListPresenter.class);
+    ArticlePresenter getArticlePresenter() {
+        return Toothpick.openScope(Di.APP_SCOPE).getInstance(ArticlePresenter.class);
     }
 
     @Nullable
@@ -40,7 +42,7 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
             @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState
     ) {
-        return inflater.inflate(R.layout.fragment_article_list, container, false);
+        return inflater.inflate(R.layout.fragment_article, container, false);
     }
 
     @Override
@@ -49,18 +51,8 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
             @Nullable Bundle savedInstanceState
     ) {
         super.onViewCreated(view, savedInstanceState);
-        textView = view.findViewById(R.id.article);
-        textView.setOnClickListener(v -> presenter.articleClick());
 
         toolbar = view.findViewById(R.id.toolbar);
-        toolbar.inflateMenu(R.menu.menu_profile);
-        toolbar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.profile) {
-                Timber.d("Профиль нажат");
-                presenter.profileClick();
 
-            }
-            return false;
-        });
     }
 }
