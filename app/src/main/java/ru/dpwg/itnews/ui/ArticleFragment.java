@@ -26,12 +26,12 @@ import toothpick.Toothpick;
 
 public class ArticleFragment extends MvpAppCompatFragment implements ArticleView {
     @InjectPresenter
-    ArticlePresenter articlePresenter;
+    ArticlePresenter presenter;
 
     Toolbar toolbar;
 
     @ProvidePresenter
-    ArticlePresenter getArticlePresenter() {
+    ArticlePresenter getPresenter() {
         return Toothpick.openScope(Di.APP_SCOPE).getInstance(ArticlePresenter.class);
     }
 
@@ -53,6 +53,6 @@ public class ArticleFragment extends MvpAppCompatFragment implements ArticleView
         super.onViewCreated(view, savedInstanceState);
 
         toolbar = view.findViewById(R.id.toolbar);
-
+toolbar.setNavigationOnClickListener(v -> presenter.onBackClick());
     }
 }

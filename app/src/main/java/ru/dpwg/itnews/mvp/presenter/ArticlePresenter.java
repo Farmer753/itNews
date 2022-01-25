@@ -20,4 +20,7 @@ public class ArticlePresenter extends MvpPresenter<ArticleView> {
         this.sessionRepository = sessionRepository;
     }
 
+    public void onBackClick() {
+        router.exit();
+    }
 }
