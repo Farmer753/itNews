@@ -34,7 +34,10 @@ public class ArticleFragment extends MvpAppCompatFragment implements ArticleView
 
     @ProvidePresenter
     ArticlePresenter getPresenter() {
-        return Toothpick.openScope(Di.APP_SCOPE).getInstance(ArticlePresenter.class);
+        ArticlePresenter aPresenter = Toothpick.openScope(Di.APP_SCOPE).getInstance(ArticlePresenter.class);
+        int id = getArguments().getInt("id");
+        aPresenter.setId(id);
+        return aPresenter;
     }
 
     @Nullable

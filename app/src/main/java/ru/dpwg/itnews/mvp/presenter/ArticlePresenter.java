@@ -9,10 +9,16 @@ import ru.dpwg.itnews.Screens;
 import ru.dpwg.itnews.domain.SessionRepository;
 import ru.dpwg.itnews.mvp.view.ArticleListView;
 import ru.dpwg.itnews.mvp.view.ArticleView;
+import timber.log.Timber;
 
 public class ArticlePresenter extends MvpPresenter<ArticleView> {
     private Router router;
     private SessionRepository sessionRepository;
+    private int id;
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     @Inject
     public ArticlePresenter(Router router, SessionRepository sessionRepository) {
@@ -22,5 +28,11 @@ public class ArticlePresenter extends MvpPresenter<ArticleView> {
 
     public void onBackClick() {
         router.exit();
+    }
+
+    @Override
+    protected void onFirstViewAttach() {
+        super.onFirstViewAttach();
+        Timber.d(id + "");
     }
 }
