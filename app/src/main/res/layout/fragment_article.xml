@@ -11,7 +11,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:theme="@style/ToolbarColoredBackArrow"
+        app:navigationIconTint="@color/white"
         android:background="?colorPrimary"
         app:title="Google ban in USA"
         app:titleTextColor="@color/white"
