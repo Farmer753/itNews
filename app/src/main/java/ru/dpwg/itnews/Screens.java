@@ -1,5 +1,7 @@
 package ru.dpwg.itnews;
 
+import android.os.Bundle;
+
 import com.github.terrakok.cicerone.Screen;
 import com.github.terrakok.cicerone.androidx.FragmentScreen;
 
@@ -36,6 +38,7 @@ public class Screens {
             return this.getClass().getName();
         }
     }
+
     public static class ArticleListScreen implements FragmentScreen {
 
 
@@ -100,10 +103,21 @@ public class Screens {
     }
 
     public static class ArticleScreen implements FragmentScreen {
+
+        private int id;
+
+        public ArticleScreen(int id) {
+            this.id = id;
+        }
+
         @NotNull
         @Override
         public Fragment createFragment(@NotNull FragmentFactory fragmentFactory) {
-            return new ArticleFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("id", id);
+            ArticleFragment fragment = new ArticleFragment();
+            fragment.setArguments(bundle);
+            return fragment;
         }
 
         @Override

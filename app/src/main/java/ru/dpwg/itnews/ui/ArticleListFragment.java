@@ -9,6 +9,8 @@ import android.widget.TextView;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Random;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import moxy.MvpAppCompatFragment;
@@ -50,8 +52,10 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
     ) {
         super.onViewCreated(view, savedInstanceState);
         textView = view.findViewById(R.id.article);
-        textView.setOnClickListener(v -> presenter.articleClick());
-
+        textView.setOnClickListener(v -> {
+            Random random = new Random();
+            presenter.articleClick(random.nextInt());
+        });
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menu_profile);
         toolbar.setOnMenuItemClickListener(item -> {

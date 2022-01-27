@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -29,6 +30,7 @@ public class ArticleFragment extends MvpAppCompatFragment implements ArticleView
     ArticlePresenter presenter;
 
     Toolbar toolbar;
+    TextView textView;
 
     @ProvidePresenter
     ArticlePresenter getPresenter() {
@@ -51,8 +53,11 @@ public class ArticleFragment extends MvpAppCompatFragment implements ArticleView
             @Nullable Bundle savedInstanceState
     ) {
         super.onViewCreated(view, savedInstanceState);
+        int id = getArguments().getInt("id");
+        textView = view.findViewById(R.id.article);
+        textView.setText(id+ "");
 
         toolbar = view.findViewById(R.id.toolbar);
-toolbar.setNavigationOnClickListener(v -> presenter.onBackClick());
+        toolbar.setNavigationOnClickListener(v -> presenter.onBackClick());
     }
 }
