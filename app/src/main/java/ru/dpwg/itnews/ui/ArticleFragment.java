@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +32,7 @@ public class ArticleFragment extends MvpAppCompatFragment implements ArticleView
 
     Toolbar toolbar;
     TextView textView;
+    Button commentButton;
 
     @ProvidePresenter
     ArticlePresenter getPresenter() {
@@ -62,5 +64,7 @@ public class ArticleFragment extends MvpAppCompatFragment implements ArticleView
 
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(v -> presenter.onBackClick());
+        commentButton = view.findViewById(R.id.commentButton);
+        commentButton.setOnClickListener(v -> presenter.commentClick());
     }
 }
