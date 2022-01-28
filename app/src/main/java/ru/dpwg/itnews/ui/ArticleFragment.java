@@ -4,12 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Random;
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -19,20 +20,26 @@ import moxy.presenter.ProvidePresenter;
 import ru.dpwg.itnews.R;
 import ru.dpwg.itnews.di.Di;
 import ru.dpwg.itnews.mvp.presenter.ArticleListPresenter;
+import ru.dpwg.itnews.mvp.presenter.ArticlePresenter;
 import ru.dpwg.itnews.mvp.view.ArticleListView;
+import ru.dpwg.itnews.mvp.view.ArticleView;
 import timber.log.Timber;
 import toothpick.Toothpick;
 
-public class ArticleListFragment extends MvpAppCompatFragment implements ArticleListView {
+public class ArticleFragment extends MvpAppCompatFragment implements ArticleView {
     @InjectPresenter
-    ArticleListPresenter presenter;
+    ArticlePresenter presenter;
 
     Toolbar toolbar;
     TextView textView;
+    Button commentButton;
 
     @ProvidePresenter
-    ArticleListPresenter getPresenter() {
-        return Toothpick.openScope(Di.APP_SCOPE).getInstance(ArticleListPresenter.class);
+    ArticlePresenter getPresenter() {
+        ArticlePresenter aPresenter = Toothpick.openScope(Di.APP_SCOPE).getInstance(ArticlePresenter.class);
+        int id = getArguments().getInt("id");
+        aPresenter.setId(id);
+        return aPresenter;
     }
 
     @Nullable
@@ -42,7 +49,7 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
             @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState
     ) {
-        return inflater.inflate(R.layout.fragment_article_list, container, false);
+        return inflater.inflate(R.layout.fragment_article, container, false);
     }
 
     @Override
@@ -51,20 +58,13 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
             @Nullable Bundle savedInstanceState
     ) {
         super.onViewCreated(view, savedInstanceState);
+        int id = getArguments().getInt("id");
         textView = view.findViewById(R.id.article);
-        textView.setOnClickListener(v -> {
-            Random random = new Random();
-            presenter.articleClick(random.nextInt());
-        });
-        toolbar = view.findViewById(R.id.toolbar);
-        toolbar.inflateMenu(R.menu.menu_profile);
-        toolbar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.profile) {
-                Timber.d("Профиль нажат");
-                presenter.profileClick();
+        textView.setText(id+ "");
 
-            }
-            return false;
-        });
+        toolbar = view.findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(v -> presenter.onBackClick());
+        commentButton = view.findViewById(R.id.commentButton);
+        commentButton.setOnClickListener(v -> presenter.commentClick());
     }
 }
