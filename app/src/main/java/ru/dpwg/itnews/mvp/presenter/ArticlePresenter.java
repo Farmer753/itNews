@@ -40,4 +40,12 @@ public class ArticlePresenter extends MvpPresenter<ArticleView> {
         router.navigateTo(new Screens.CommentScreen(id));
 
     }
+
+    public void profileClick() {
+        if (sessionRepository.getAccessToken() == null) {
+            router.navigateTo(new Screens.LoginScreen());
+        } else {
+            router.navigateTo(new Screens.ProfileScreen());
+        }
+    }
 }

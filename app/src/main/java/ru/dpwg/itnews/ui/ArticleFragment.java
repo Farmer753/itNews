@@ -64,6 +64,15 @@ public class ArticleFragment extends MvpAppCompatFragment implements ArticleView
 
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(v -> presenter.onBackClick());
+        toolbar.inflateMenu(R.menu.menu_profile);
+        toolbar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.profile) {
+                Timber.d("Профиль нажат");
+                presenter.profileClick();
+
+            }
+            return false;
+        });
         commentButton = view.findViewById(R.id.commentButton);
         commentButton.setOnClickListener(v -> presenter.commentClick());
     }
