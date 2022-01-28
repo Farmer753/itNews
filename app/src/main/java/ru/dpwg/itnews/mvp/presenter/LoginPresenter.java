@@ -69,4 +69,8 @@ public class LoginPresenter extends MvpPresenter<LoginView> {
                 );
 
     }
+
+    public void onBackClick() {
+        router.exit();
+    }
 }

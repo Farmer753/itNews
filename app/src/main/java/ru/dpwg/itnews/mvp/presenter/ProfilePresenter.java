@@ -63,4 +63,8 @@ public class ProfilePresenter extends MvpPresenter<ProfileView> {
 
 
     }
+
+    public void onBackClick() {
+        router.exit();
+    }
 }

@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import androidx.appcompat.widget.Toolbar;
 import moxy.MvpAppCompatFragment;
 import moxy.presenter.InjectPresenter;
 import moxy.presenter.ProvidePresenter;
@@ -35,6 +36,7 @@ public class ProfileFragment extends MvpAppCompatFragment implements ProfileView
     TextView nameTextView;
     Button buttonRetry;
     ImageView iconImageView;
+    Toolbar toolbar;
 
 
     @InjectPresenter
@@ -69,6 +71,8 @@ public class ProfileFragment extends MvpAppCompatFragment implements ProfileView
         iconImageView = view.findViewById(R.id.iconImageView);
         buttonRetry = view.findViewById(R.id.buttonRetry);
         buttonRetry.setOnClickListener(v -> profilePresenter.loadUser());
+        toolbar = view.findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(v -> profilePresenter.onBackClick());
 
     }
 

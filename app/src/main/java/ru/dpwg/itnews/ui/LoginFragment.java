@@ -60,6 +60,7 @@ public class LoginFragment extends MvpAppCompatFragment implements LoginView {
         emailEditText = view.findViewById(R.id.emailEditText);
         passwordEditText = view.findViewById(R.id.passwordEditText);
         progressView = view.findViewById(R.id.progressView);
+        toolbar.setNavigationOnClickListener(v -> presenter.onBackClick());
 
         emailEditText.addTextChangedListener(new TextWatcher() {
             @Override
