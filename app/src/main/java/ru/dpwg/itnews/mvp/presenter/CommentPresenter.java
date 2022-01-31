@@ -35,9 +35,10 @@ public class CommentPresenter extends MvpPresenter<CommentView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         Timber.d(id + "");
-        boolean notLogined = sessionRepository.getAccessToken() == null;
-        getViewState().showButtonLogin(notLogined);
-        getViewState().showInput(!notLogined);
+        sessionRepository.loginState().subscribe(isLogined -> {
+            getViewState().showButtonLogin(!isLogined);
+            getViewState().showInput(isLogined);
+        });
     }
 
     public void profileClick() {
