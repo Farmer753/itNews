@@ -19,4 +19,7 @@ public interface CommentView extends MvpView{
 
     @AddToEndSingle
     void enableInput(boolean enable);
+
+    @AddToEndSingle
+    void showInput(boolean show);
 }

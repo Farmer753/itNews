@@ -1,6 +1,7 @@
 package ru.dpwg.itnews.ui;
 
 import android.os.Bundle;
+import android.renderscript.ScriptGroup;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -37,6 +38,7 @@ public class CommentFragment extends MvpAppCompatFragment implements CommentView
     Button buttonLogin;
     View progressView;
     ImageView sendComment;
+    View commentInput;
 
 
     @ProvidePresenter
@@ -63,7 +65,7 @@ public class CommentFragment extends MvpAppCompatFragment implements CommentView
             @Nullable Bundle savedInstanceState
     ) {
         super.onViewCreated(view, savedInstanceState);
-
+        commentInput = view.findViewById(R.id.commentInput);
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(v -> presenter.onBackClick());
         toolbar.inflateMenu(R.menu.menu_profile);
@@ -106,6 +108,17 @@ public class CommentFragment extends MvpAppCompatFragment implements CommentView
             buttonLogin.setVisibility(View.VISIBLE);
         } else {
             buttonLogin.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void showInput(boolean show) {
+        if (show) {
+            commentInput.setVisibility(View.VISIBLE);
+            sendComment.setVisibility(View.VISIBLE);
+        } else {
+            commentInput.setVisibility(View.GONE);
+            sendComment.setVisibility(View.GONE);
         }
     }
 
