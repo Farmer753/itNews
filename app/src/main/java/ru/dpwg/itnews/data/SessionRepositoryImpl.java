@@ -2,10 +2,13 @@ package ru.dpwg.itnews.data;
 
 import android.content.SharedPreferences;
 
+import com.jakewharton.rxrelay3.BehaviorRelay;
+
 import java.util.Random;
 
 import javax.inject.Inject;
 
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import ru.dpwg.itnews.domain.SessionRepository;
 import ru.dpwg.itnews.domain.TokenResponse;
@@ -13,10 +16,13 @@ import ru.dpwg.itnews.domain.TokenResponse;
 public class SessionRepositoryImpl implements SessionRepository {
 
     private SharedPreferences sharedPreferences;
+    private BehaviorRelay<Boolean> loginState;
+
 
     @Inject
     public SessionRepositoryImpl(SharedPreferences sharedPreferences) {
         this.sharedPreferences = sharedPreferences;
+        loginState = BehaviorRelay.createDefault(getAccessToken() != null);
     }
 
     @Override
@@ -57,5 +63,12 @@ public class SessionRepositoryImpl implements SessionRepository {
     @Override
     public void saveAccessToken(String accessToken) {
         sharedPreferences.edit().putString("accessToken", accessToken).apply();
+        loginState.accept(accessToken != null);
+
+    }
+
+    @Override
+    public Observable<Boolean> loginState() {
+        return loginState;
     }
 }
