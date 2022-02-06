@@ -4,11 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Random;
 
 import androidx.annotation.NonNull;
@@ -18,6 +21,7 @@ import moxy.presenter.InjectPresenter;
 import moxy.presenter.ProvidePresenter;
 import ru.dpwg.itnews.R;
 import ru.dpwg.itnews.di.Di;
+import ru.dpwg.itnews.domain.article.NwArticle;
 import ru.dpwg.itnews.mvp.presenter.ArticleListPresenter;
 import ru.dpwg.itnews.mvp.view.ArticleListView;
 import timber.log.Timber;
@@ -29,6 +33,8 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
 
     Toolbar toolbar;
     TextView textView;
+    View progressView;
+    Button buttonRetry;
 
     @ProvidePresenter
     ArticleListPresenter getPresenter() {
@@ -56,6 +62,9 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
             Random random = new Random();
             presenter.articleClick(random.nextInt());
         });
+        progressView = view.findViewById(R.id.progressView);
+        buttonRetry = view.findViewById(R.id.buttonRetry);
+        buttonRetry.setOnClickListener(v -> presenter.loadArticles(0));
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menu_profile);
         toolbar.setOnMenuItemClickListener(item -> {
@@ -66,5 +75,34 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
             }
             return false;
         });
+    }
+
+    @Override
+    public void showProgress(boolean show) {
+        if (show) {
+            progressView.setVisibility(View.VISIBLE);
+        } else {
+            progressView.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void showMessage(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showArticles(List<NwArticle> articles) {
+        textView.setText("загружено статей: " + articles.size());
+    }
+
+
+    @Override
+    public void showButtonRetry(boolean show) {
+        if (show) {
+            buttonRetry.setVisibility(View.VISIBLE);
+        } else {
+            buttonRetry.setVisibility(View.GONE);
+        }
     }
 }
