@@ -5,17 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -25,10 +19,7 @@ import moxy.presenter.ProvidePresenter;
 import ru.dpwg.itnews.R;
 import ru.dpwg.itnews.di.Di;
 import ru.dpwg.itnews.domain.article.NwArticle;
-import ru.dpwg.itnews.domain.user.NwUser;
-import ru.dpwg.itnews.mvp.presenter.ArticleListPresenter;
 import ru.dpwg.itnews.mvp.presenter.ArticlePresenter;
-import ru.dpwg.itnews.mvp.view.ArticleListView;
 import ru.dpwg.itnews.mvp.view.ArticleView;
 import timber.log.Timber;
 import toothpick.Toothpick;
@@ -68,9 +59,7 @@ public class ArticleFragment extends MvpAppCompatFragment implements ArticleView
             @Nullable Bundle savedInstanceState
     ) {
         super.onViewCreated(view, savedInstanceState);
-        int id = getArguments().getInt("id");
         textView = view.findViewById(R.id.article);
-        textView.setText(id + "");
         progressView = view.findViewById(R.id.progressView);
         buttonRetry = view.findViewById(R.id.buttonRetry);
         buttonRetry.setOnClickListener(v -> presenter.loadArticle());

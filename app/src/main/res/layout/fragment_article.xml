@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:layout_width="match_parent"
@@ -13,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:navigationIconTint="@color/white"
         android:background="?colorPrimary"
-        app:title="Google ban in USA"
+        tools:title="Google ban in USA"
         app:titleTextColor="@color/white"
         app:navigationIcon="@drawable/ic_baseline_arrow_back_24" />
 
@@ -21,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/article"
-        android:text="Text"
+        tools:text="Text"
         android:gravity="center" />
 
     <com.google.android.material.button.MaterialButton
