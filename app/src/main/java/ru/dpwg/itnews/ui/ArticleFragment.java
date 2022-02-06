@@ -6,11 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -19,9 +18,8 @@ import moxy.presenter.InjectPresenter;
 import moxy.presenter.ProvidePresenter;
 import ru.dpwg.itnews.R;
 import ru.dpwg.itnews.di.Di;
-import ru.dpwg.itnews.mvp.presenter.ArticleListPresenter;
+import ru.dpwg.itnews.domain.article.NwArticle;
 import ru.dpwg.itnews.mvp.presenter.ArticlePresenter;
-import ru.dpwg.itnews.mvp.view.ArticleListView;
 import ru.dpwg.itnews.mvp.view.ArticleView;
 import timber.log.Timber;
 import toothpick.Toothpick;
@@ -33,6 +31,9 @@ public class ArticleFragment extends MvpAppCompatFragment implements ArticleView
     Toolbar toolbar;
     TextView textView;
     Button commentButton;
+    View progressView;
+    Button buttonRetry;
+
 
     @ProvidePresenter
     ArticlePresenter getPresenter() {
@@ -58,10 +59,10 @@ public class ArticleFragment extends MvpAppCompatFragment implements ArticleView
             @Nullable Bundle savedInstanceState
     ) {
         super.onViewCreated(view, savedInstanceState);
-        int id = getArguments().getInt("id");
         textView = view.findViewById(R.id.article);
-        textView.setText(id+ "");
-
+        progressView = view.findViewById(R.id.progressView);
+        buttonRetry = view.findViewById(R.id.buttonRetry);
+        buttonRetry.setOnClickListener(v -> presenter.loadArticle());
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(v -> presenter.onBackClick());
         toolbar.inflateMenu(R.menu.menu_profile);
@@ -75,5 +76,36 @@ public class ArticleFragment extends MvpAppCompatFragment implements ArticleView
         });
         commentButton = view.findViewById(R.id.commentButton);
         commentButton.setOnClickListener(v -> presenter.commentClick());
+    }
+
+    @Override
+    public void showProgress(boolean show) {
+        if (show) {
+            progressView.setVisibility(View.VISIBLE);
+        } else {
+            progressView.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void showMessage(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showArticle(NwArticle nwArticle) {
+        textView.setText(nwArticle.translations.get(0).versions.get(0).text);
+        toolbar.setTitle(nwArticle.translations.get(0).title);
+    }
+
+
+
+    @Override
+    public void showButtonRetry(boolean show) {
+        if (show) {
+            buttonRetry.setVisibility(View.VISIBLE);
+        } else {
+            buttonRetry.setVisibility(View.GONE);
+        }
     }
 }
