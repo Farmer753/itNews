@@ -2,6 +2,9 @@ package ru.dpwg.itnews.mvp.presenter;
 
 import com.github.terrakok.cicerone.Router;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -10,6 +13,7 @@ import moxy.MvpPresenter;
 import ru.dpwg.itnews.Screens;
 import ru.dpwg.itnews.domain.SessionRepository;
 import ru.dpwg.itnews.domain.article.ArticleRepository;
+import ru.dpwg.itnews.domain.article.NwArticle;
 import ru.dpwg.itnews.mvp.view.ArticleListView;
 import timber.log.Timber;
 
@@ -17,8 +21,8 @@ public class ArticleListPresenter extends MvpPresenter<ArticleListView> {
     private Router router;
     private SessionRepository sessionRepository;
     private ArticleRepository articleRepository;
-    final static int LIMIT=10;
-
+    final static int LIMIT = 10;
+    private List<NwArticle> articles = new ArrayList<>();
 
 
     @Inject
@@ -51,7 +55,7 @@ public class ArticleListPresenter extends MvpPresenter<ArticleListView> {
 
     }
 
-    public void loadArticles(int offset){
+    public void loadArticles(int offset) {
         articleRepository
                 .loadArticles(LIMIT, offset)
                 .subscribeOn(Schedulers.io())
@@ -62,8 +66,14 @@ public class ArticleListPresenter extends MvpPresenter<ArticleListView> {
                 })
                 .doOnEvent((tokenResponse, throwable) -> getViewState().showProgress(false))
                 .subscribe(
-                        articles -> {
-                            Timber.d(articles.get(0).translations.get(0).versions.get(0).text);
+                        loadArticles -> {
+//                            Timber.d(loadArticles.get(0).translations.get(0).versions.get(0).text);
+                            if (offset == 0) {
+                                articles.clear();
+                                articles.addAll(loadArticles);
+                            } else {
+                                articles.addAll(loadArticles);
+                            }
                             getViewState().showArticles(articles);
                         },
                         error -> {

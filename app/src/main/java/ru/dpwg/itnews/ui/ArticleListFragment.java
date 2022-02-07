@@ -35,6 +35,7 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
     TextView textView;
     View progressView;
     Button buttonRetry;
+    Button buttonLoadMore;
 
     @ProvidePresenter
     ArticleListPresenter getPresenter() {
@@ -65,6 +66,8 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
         progressView = view.findViewById(R.id.progressView);
         buttonRetry = view.findViewById(R.id.buttonRetry);
         buttonRetry.setOnClickListener(v -> presenter.loadArticles(0));
+        buttonLoadMore = view.findViewById(R.id.buttonLoadMore);
+        buttonLoadMore.setOnClickListener(v -> presenter.loadArticles(textView.getLineCount()));
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menu_profile);
         toolbar.setOnMenuItemClickListener(item -> {
@@ -93,7 +96,16 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
 
     @Override
     public void showArticles(List<NwArticle> articles) {
-        textView.setText("загружено статей: " + articles.size());
+        String text = "";
+//        for (NwArticle article : articles) {
+        for (int i = 0; i < articles.size(); i++) {
+            NwArticle article = articles.get(i);
+            text = text + article.translations.get(0).title;
+            if (i < articles.size() - 1) {
+                text = text + "\n";
+            }
+        }
+        textView.setText(text);
     }
 
 
