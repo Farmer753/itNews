@@ -16,12 +16,21 @@
         app:title="Articles"
         app:titleTextColor="@color/white"/>
 
+<ScrollView
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/toolbar"
+    app:layout_constraintBottom_toTopOf="@+id/buttonLoadMore">
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/article"
         android:text="Text"
         android:gravity="center" />
+</ScrollView>
+
 
     <com.google.android.material.button.MaterialButton
         android:layout_width="match_parent"
