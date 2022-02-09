@@ -125,6 +125,10 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
         buttonLoadMore.setEnabled(enable);
     }
 
+    @Override
+    public void enableSwipeRefreshLayout(boolean enable) {
+        swipeRefreshLayout.setEnabled(enable);
+    }
 
     @Override
     public void showButtonRetry(boolean show) {
