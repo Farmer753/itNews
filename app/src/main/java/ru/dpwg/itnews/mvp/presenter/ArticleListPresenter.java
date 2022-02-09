@@ -61,10 +61,19 @@ public class ArticleListPresenter extends MvpPresenter<ArticleListView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> {
-                    getViewState().showProgress(true);
+                    if (offset == 0) {
+                        getViewState().showSwipeRefreshLayout(true);
+                    } else {
+                        getViewState().showProgress(true);
+                    }
                     getViewState().showButtonRetry(false);
+                    getViewState().enableButtonLoadMore(false);
                 })
-                .doOnEvent((tokenResponse, throwable) -> getViewState().showProgress(false))
+                .doOnEvent((tokenResponse, throwable) -> {
+                    getViewState().showSwipeRefreshLayout(false);
+                    getViewState().showProgress(false);
+                    getViewState().enableButtonLoadMore(true);
+                })
                 .subscribe(
                         loadArticles -> {
 //                            Timber.d(loadArticles.get(0).translations.get(0).versions.get(0).text);
@@ -79,7 +88,9 @@ public class ArticleListPresenter extends MvpPresenter<ArticleListView> {
                         error -> {
                             Timber.e(error);
                             getViewState().showMessage(error.getMessage());
-                            getViewState().showButtonRetry(true);
+                            if (offset == 0) {
+                                getViewState().showButtonRetry(true);
+                            }
                         }
                 );
 

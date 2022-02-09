@@ -1,5 +1,6 @@
 package ru.dpwg.itnews.ui;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,9 @@ import java.util.List;
 import java.util.Random;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import moxy.MvpAppCompatFragment;
 import moxy.presenter.InjectPresenter;
 import moxy.presenter.ProvidePresenter;
@@ -36,6 +39,7 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
     View progressView;
     Button buttonRetry;
     Button buttonLoadMore;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @ProvidePresenter
     ArticleListPresenter getPresenter() {
@@ -52,6 +56,7 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
         return inflater.inflate(R.layout.fragment_article_list, container, false);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onViewCreated(
             @NonNull View view,
@@ -64,6 +69,8 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
             presenter.articleClick(random.nextInt());
         });
         progressView = view.findViewById(R.id.progressView);
+        swipeRefreshLayout = view.findViewById(R.id.swiperefreshlayout);
+        swipeRefreshLayout.setOnRefreshListener(() -> presenter.loadArticles(0));
         buttonRetry = view.findViewById(R.id.buttonRetry);
         buttonRetry.setOnClickListener(v -> presenter.loadArticles(0));
         buttonLoadMore = view.findViewById(R.id.buttonLoadMore);
@@ -106,6 +113,16 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
             }
         }
         textView.setText(text);
+    }
+
+    @Override
+    public void showSwipeRefreshLayout(boolean show) {
+        swipeRefreshLayout.setRefreshing(show);
+    }
+
+    @Override
+    public void enableButtonLoadMore(boolean enable) {
+        buttonLoadMore.setEnabled(enable);
     }
 
 

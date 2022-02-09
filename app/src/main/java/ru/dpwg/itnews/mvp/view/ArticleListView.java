@@ -20,4 +20,11 @@ public interface ArticleListView extends MvpView {
     @AddToEndSingle
     void showArticles(List<NwArticle> articles);
 
+    @AddToEndSingle
+    void showSwipeRefreshLayout(boolean show);
+
+
+    @AddToEndSingle
+    void enableButtonLoadMore(boolean enable);
+
 }
