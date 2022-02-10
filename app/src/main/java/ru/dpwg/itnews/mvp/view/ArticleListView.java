@@ -28,4 +28,5 @@ public interface ArticleListView extends MvpView {
 
     @AddToEndSingle
     void enableSwipeRefreshLayout(boolean enable);
+
 }
