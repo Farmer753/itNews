@@ -10,19 +10,24 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import moxy.MvpAppCompatFragment;
 import moxy.presenter.InjectPresenter;
 import moxy.presenter.ProvidePresenter;
 import ru.dpwg.itnews.R;
 import ru.dpwg.itnews.di.Di;
+import ru.dpwg.itnews.domain.NwComment;
 import ru.dpwg.itnews.mvp.presenter.CommentPresenter;
 import ru.dpwg.itnews.mvp.view.CommentView;
 import timber.log.Timber;
@@ -39,6 +44,10 @@ public class CommentFragment extends MvpAppCompatFragment implements CommentView
     View progressView;
     ImageView sendComment;
     View commentInput;
+    Button buttonRetry;
+    Button buttonLoadMore;
+    SwipeRefreshLayout swipeRefreshLayout;
+    LinearLayout commentContainer;
 
 
     @ProvidePresenter
@@ -66,6 +75,13 @@ public class CommentFragment extends MvpAppCompatFragment implements CommentView
     ) {
         super.onViewCreated(view, savedInstanceState);
         commentInput = view.findViewById(R.id.commentInput);
+        swipeRefreshLayout = view.findViewById(R.id.swiperefreshlayout);
+        swipeRefreshLayout.setOnRefreshListener(() -> presenter.loadComment(10,0));
+        buttonRetry = view.findViewById(R.id.buttonRetry);
+        buttonRetry.setOnClickListener(v -> presenter.loadComment(10,0));
+        commentContainer = view.findViewById(R.id.articleContainer);
+        buttonLoadMore = view.findViewById(R.id.buttonLoadMore);
+        buttonLoadMore.setOnClickListener(v -> presenter.loadComment(commentContainer.getChildCount()));
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(v -> presenter.onBackClick());
         toolbar.inflateMenu(R.menu.menu_profile);
@@ -120,6 +136,35 @@ public class CommentFragment extends MvpAppCompatFragment implements CommentView
             commentInput.setVisibility(View.GONE);
             sendComment.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void enableSwipeRefreshLayout(boolean enable) {
+        swipeRefreshLayout.setEnabled(enable);
+    }
+
+    @Override
+    public void enableButtonLoadMore(boolean enable)  {
+        buttonLoadMore.setEnabled(enable);
+    }
+
+    @Override
+    public void showButtonRetry(boolean show) {
+        if (show) {
+            buttonRetry.setVisibility(View.VISIBLE);
+        } else {
+            buttonRetry.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void showComments(List<NwComment> comments) {
+
+    }
+
+    @Override
+    public void showSwipeRefreshLayout(boolean show)  {
+        swipeRefreshLayout.setRefreshing(show);
     }
 
     @Override
