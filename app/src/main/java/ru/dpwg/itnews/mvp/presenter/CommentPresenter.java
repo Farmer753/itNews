@@ -21,6 +21,8 @@ public class CommentPresenter extends MvpPresenter<CommentView> {
     private String commentText;
     private CommentRepository commentRepository;
 
+    final static int LIMIT = 10;
+
     public void setId(int id) {
         this.id = id;
     }
@@ -40,6 +42,7 @@ public class CommentPresenter extends MvpPresenter<CommentView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         Timber.d(id + "");
+        loadComment(0);
         sessionRepository.loginState().subscribe(isLogined -> {
             getViewState().showButtonLogin(!isLogined);
             getViewState().showInput(isLogined);
@@ -80,4 +83,23 @@ public class CommentPresenter extends MvpPresenter<CommentView> {
                         }
                 );
     }
+
+    public void loadComment(int offset) {
+        commentRepository.loadComment(offset,LIMIT, id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(disposable -> getViewState().showProgress(true))
+                .doOnEvent((tokenResponse, throwable) -> getViewState().showProgress(false))
+                .subscribe(
+                        nwComments -> {
+                            Timber.d("Текст комментария" + nwComments);
+                        },
+                        error -> {
+                            Timber.e(error);
+                            getViewState().showMessage(error.getMessage());
+                        }
+                );
+    }
+
+
 }

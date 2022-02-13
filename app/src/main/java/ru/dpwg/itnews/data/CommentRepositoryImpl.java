@@ -52,13 +52,13 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public Single<List<NwComment>> loadComment(int offset, int id) {
+    public Single<List<NwComment>> loadComment(int offset, int limit, int id) {
         return Single.create(emitter -> {
             Thread.sleep(2000);
             Random random = new Random();
             if (random.nextBoolean()) {
                 List<NwComment> commentList = new ArrayList<>();
-                for (int i = 0; i < offset; i++) {
+                for (int i = 0; i < limit; i++) {
                     commentList.add(generateComment(i + offset));
                 }
                 emitter.onSuccess(commentList);
@@ -79,6 +79,8 @@ public class CommentRepositoryImpl implements CommentRepository {
 
         NwUser nwUser = new NwUser();
         nwComment.author = nwUser;
+        nwUser.avatar = "https://lh3.googleusercontent.com/a-/AOh14Gj3ukh3ZjYqzHljegP2jYkCm0FF3w0zSAFa9lVD=s96-c";
+        nwUser.fullName = "Людмила Шевчук";
         return nwComment;
     }
 }

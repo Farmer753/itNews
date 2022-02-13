@@ -76,9 +76,9 @@ public class CommentFragment extends MvpAppCompatFragment implements CommentView
         super.onViewCreated(view, savedInstanceState);
         commentInput = view.findViewById(R.id.commentInput);
         swipeRefreshLayout = view.findViewById(R.id.swiperefreshlayout);
-        swipeRefreshLayout.setOnRefreshListener(() -> presenter.loadComment(10,0));
+        swipeRefreshLayout.setOnRefreshListener(() -> presenter.loadComment(0));
         buttonRetry = view.findViewById(R.id.buttonRetry);
-        buttonRetry.setOnClickListener(v -> presenter.loadComment(10,0));
+        buttonRetry.setOnClickListener(v -> presenter.loadComment(0));
         commentContainer = view.findViewById(R.id.articleContainer);
         buttonLoadMore = view.findViewById(R.id.buttonLoadMore);
         buttonLoadMore.setOnClickListener(v -> presenter.loadComment(commentContainer.getChildCount()));
