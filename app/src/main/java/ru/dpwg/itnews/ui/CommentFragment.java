@@ -12,7 +12,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -28,6 +31,7 @@ import moxy.presenter.ProvidePresenter;
 import ru.dpwg.itnews.R;
 import ru.dpwg.itnews.di.Di;
 import ru.dpwg.itnews.domain.NwComment;
+import ru.dpwg.itnews.domain.article.NwArticle;
 import ru.dpwg.itnews.mvp.presenter.CommentPresenter;
 import ru.dpwg.itnews.mvp.view.CommentView;
 import timber.log.Timber;
@@ -79,7 +83,7 @@ public class CommentFragment extends MvpAppCompatFragment implements CommentView
         swipeRefreshLayout.setOnRefreshListener(() -> presenter.loadComment(0));
         buttonRetry = view.findViewById(R.id.buttonRetry);
         buttonRetry.setOnClickListener(v -> presenter.loadComment(0));
-        commentContainer = view.findViewById(R.id.articleContainer);
+        commentContainer = view.findViewById(R.id.commentContainer);
         buttonLoadMore = view.findViewById(R.id.buttonLoadMore);
         buttonLoadMore.setOnClickListener(v -> presenter.loadComment(commentContainer.getChildCount()));
         toolbar = view.findViewById(R.id.toolbar);
@@ -144,7 +148,7 @@ public class CommentFragment extends MvpAppCompatFragment implements CommentView
     }
 
     @Override
-    public void enableButtonLoadMore(boolean enable)  {
+    public void enableButtonLoadMore(boolean enable) {
         buttonLoadMore.setEnabled(enable);
     }
 
@@ -159,11 +163,15 @@ public class CommentFragment extends MvpAppCompatFragment implements CommentView
 
     @Override
     public void showComments(List<NwComment> comments) {
-
+        commentContainer.removeAllViews();
+        for (int i = 0; i < comments.size(); i++) {
+            NwComment comment = comments.get(i);
+            commentContainer.addView(createCommentView(comment));
+        }
     }
 
     @Override
-    public void showSwipeRefreshLayout(boolean show)  {
+    public void showSwipeRefreshLayout(boolean show) {
         swipeRefreshLayout.setRefreshing(show);
     }
 
@@ -189,5 +197,29 @@ public class CommentFragment extends MvpAppCompatFragment implements CommentView
     @Override
     public void enableInput(boolean enable) {
         commentEditText.setEnabled(enable);
+    }
+
+    private View createCommentView(NwComment nwComment) {
+        ImageView iconImageView;
+        TextView userNameTextView;
+        TextView dateTextView;
+        TextView commentTextView;
+
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View view = inflater.inflate(R.layout.list_item_comment, null, false);
+
+        iconImageView = view.findViewById(R.id.iconImageView);
+        userNameTextView = view.findViewById(R.id.userNameTextView);
+        dateTextView = view.findViewById(R.id.dateTextView);
+        commentTextView = view.findViewById(R.id.commentTextView);
+
+        userNameTextView.setText(nwComment.author.fullName);
+        dateTextView.setText(nwComment.created);
+        commentTextView.setText(nwComment.text);
+        Glide.with(iconImageView)
+                .load(nwComment.author.avatar)
+                .into(iconImageView);
+
+        return view;
     }
 }

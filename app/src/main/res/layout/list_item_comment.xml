@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="16dp">
+
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:id="@+id/iconImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:background="@color/black" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/userNameTextView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iconImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Имя юзера"
+        android:layout_marginStart="16dp"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/dateTextView"
+        app:layout_constraintTop_toBottomOf="@+id/userNameTextView"
+        app:layout_constraintStart_toEndOf="@+id/iconImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="10.02.2022"
+        android:layout_marginStart="16dp"/>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/barrier"
+        app:constraint_referenced_ids="iconImageView, dateTextView"
+        app:barrierDirection="bottom"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/commentTextView"
+        app:layout_constraintTop_toBottomOf="@+id/barrier"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        tools:text="Текст комментария много слов много словмного словмного словмного словмного словмного словмного словмного словмного словмного словмного словмного словмного слов"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

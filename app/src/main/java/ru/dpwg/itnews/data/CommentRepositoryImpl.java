@@ -72,7 +72,7 @@ public class CommentRepositoryImpl implements CommentRepository {
         NwComment nwComment = new NwComment();
 
         nwComment.id = id;
-        nwComment.text = "комментарий";
+        nwComment.text = "комментарий" + id;
         nwComment.authorId = 2;
         nwComment.articleId = id;
         nwComment.created = "2022-02-04T16:14:00.000Z";
