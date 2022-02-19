@@ -20,13 +20,13 @@ import ru.dpwg.itnews.domain.NwComment;
 
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
 
-    private List<NwComment> comments = new ArrayList<>();
+    private final List<NwComment> comments = new ArrayList<>();
 
     @NotNull
     @Override
     public ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.list_item_comment, null, false);
+        View view = inflater.inflate(R.layout.list_item_comment, parent, false);
         return new ViewHolder(view);
     }
 
