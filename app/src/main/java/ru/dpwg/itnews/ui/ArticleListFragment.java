@@ -6,23 +6,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Random;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import moxy.MvpAppCompatFragment;
 import moxy.presenter.InjectPresenter;
@@ -39,12 +34,14 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
     @InjectPresenter
     ArticleListPresenter presenter;
 
+    ArticlesAdapter adapter;
+
     Toolbar toolbar;
     View progressView;
     Button buttonRetry;
     Button buttonLoadMore;
     SwipeRefreshLayout swipeRefreshLayout;
-    LinearLayout articleContainer;
+    RecyclerView recyclerView;
 
     @ProvidePresenter
     ArticleListPresenter getPresenter() {
@@ -68,16 +65,17 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
             @Nullable Bundle savedInstanceState
     ) {
         super.onViewCreated(view, savedInstanceState);
-
-
         progressView = view.findViewById(R.id.progressView);
         swipeRefreshLayout = view.findViewById(R.id.swiperefreshlayout);
         swipeRefreshLayout.setOnRefreshListener(() -> presenter.loadArticles(0));
         buttonRetry = view.findViewById(R.id.buttonRetry);
         buttonRetry.setOnClickListener(v -> presenter.loadArticles(0));
-        articleContainer = view.findViewById(R.id.articleContainer);
+        recyclerView = view.findViewById(R.id.recyclerView);
+        adapter = new ArticlesAdapter();
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         buttonLoadMore = view.findViewById(R.id.buttonLoadMore);
-        buttonLoadMore.setOnClickListener(v -> presenter.loadArticles(articleContainer.getChildCount()));
+        buttonLoadMore.setOnClickListener(v -> presenter.loadArticles(adapter.getItemCount()));
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menu_profile);
         toolbar.setOnMenuItemClickListener(item -> {
@@ -105,11 +103,7 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
 
     @Override
     public void showArticles(List<NwArticle> articles) {
-        articleContainer.removeAllViews();
-        for (int i = 0; i < articles.size(); i++) {
-            NwArticle article = articles.get(i);
-            articleContainer.addView(createArticleView(article));
-        }
+        adapter.setArticles(articles);
     }
 
     @Override
@@ -134,31 +128,5 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
         } else {
             buttonRetry.setVisibility(View.GONE);
         }
-    }
-
-    private View createArticleView(NwArticle nwArticle) {
-        ImageView articleImageView;
-        TextView titleTextView;
-        TextView dateTextView;
-        TextView articleTextView;
-
-        LayoutInflater inflater = LayoutInflater.from(getContext());
-        View view = inflater.inflate(R.layout.list_item_article, null, false);
-
-        articleImageView = view.findViewById(R.id.articleImageView);
-        titleTextView = view.findViewById(R.id.titleTextView);
-        dateTextView = view.findViewById(R.id.dateTextView);
-        articleTextView = view.findViewById(R.id.articleTextView);
-
-        view.setOnClickListener(v -> presenter.articleClick(nwArticle.id));
-
-        titleTextView.setText(nwArticle.translations.get(0).title);
-        dateTextView.setText(nwArticle.publishedDate);
-        articleTextView.setText(nwArticle.translations.get(0).shortDescription);
-        Glide.with(articleImageView)
-                .load("https://dont-play-with-google.com:8443/api/" + nwArticle.translations.get(0).imageUrl)
-                .into(articleImageView);
-
-        return view;
     }
 }
