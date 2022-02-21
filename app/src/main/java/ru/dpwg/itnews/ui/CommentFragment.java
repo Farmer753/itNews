@@ -29,6 +29,7 @@ import ru.dpwg.itnews.di.Di;
 import ru.dpwg.itnews.domain.NwComment;
 import ru.dpwg.itnews.mvp.presenter.CommentPresenter;
 import ru.dpwg.itnews.mvp.view.CommentView;
+import ru.dpwg.itnews.ui.util.EndlessRecyclerViewScrollListener;
 import timber.log.Timber;
 import toothpick.Toothpick;
 
@@ -83,7 +84,6 @@ public class CommentFragment extends MvpAppCompatFragment implements CommentView
         recyclerView.setAdapter(adapter);
         buttonRetry = view.findViewById(R.id.buttonRetry);
         buttonRetry.setOnClickListener(v -> presenter.loadComment(0));
-        buttonLoadMore = view.findViewById(R.id.buttonLoadMore);
         buttonLoadMore.setOnClickListener(v -> presenter.loadComment(adapter.getItemCount()));
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(v -> presenter.onBackClick());
@@ -146,8 +146,19 @@ public class CommentFragment extends MvpAppCompatFragment implements CommentView
     }
 
     @Override
-    public void enableButtonLoadMore(boolean enable) {
-        buttonLoadMore.setEnabled(enable);
+    public void enableScrollListener(boolean enable) {
+        if (enable) {
+            recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener() {
+                @Override
+                public void onLoadMore(int page, int totalItemsCount) {
+                    Timber.d("onLoadMore " + page + " " + totalItemsCount);
+                    recyclerView.clearOnScrollListeners();
+                    presenter.loadComment(totalItemsCount);
+                }
+            });
+        } else {
+            recyclerView.clearOnScrollListeners();
+        }
     }
 
     @Override

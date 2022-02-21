@@ -95,7 +95,7 @@ public class CommentPresenter extends MvpPresenter<CommentView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> {
-                    getViewState().enableButtonLoadMore(false);
+                    getViewState().enableScrollListener(false);
                     getViewState().enableSwipeRefreshLayout(false);
                     getViewState().showButtonRetry(false);
                     if (offset != 0) {
@@ -107,7 +107,7 @@ public class CommentPresenter extends MvpPresenter<CommentView> {
                 .doOnEvent((tokenResponse, throwable) -> {
                     getViewState().showProgress(false);
                     getViewState().showSwipeRefreshLayout(false);
-                    getViewState().enableButtonLoadMore(true);
+                    getViewState().enableScrollListener(true);
                     getViewState().enableSwipeRefreshLayout(true);
                 })
                 .subscribe(

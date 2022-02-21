@@ -27,6 +27,7 @@ import ru.dpwg.itnews.di.Di;
 import ru.dpwg.itnews.domain.article.NwArticle;
 import ru.dpwg.itnews.mvp.presenter.ArticleListPresenter;
 import ru.dpwg.itnews.mvp.view.ArticleListView;
+import ru.dpwg.itnews.ui.util.EndlessRecyclerViewScrollListener;
 import timber.log.Timber;
 import toothpick.Toothpick;
 
@@ -39,7 +40,6 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
     Toolbar toolbar;
     View progressView;
     Button buttonRetry;
-    Button buttonLoadMore;
     SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView recyclerView;
 
@@ -71,11 +71,9 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
         buttonRetry = view.findViewById(R.id.buttonRetry);
         buttonRetry.setOnClickListener(v -> presenter.loadArticles(0));
         recyclerView = view.findViewById(R.id.recyclerView);
-        adapter = new ArticlesAdapter();
+        adapter = new ArticlesAdapter(article -> presenter.articleClick(article.id));
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        buttonLoadMore = view.findViewById(R.id.buttonLoadMore);
-        buttonLoadMore.setOnClickListener(v -> presenter.loadArticles(adapter.getItemCount()));
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menu_profile);
         toolbar.setOnMenuItemClickListener(item -> {
@@ -112,8 +110,19 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
     }
 
     @Override
-    public void enableButtonLoadMore(boolean enable) {
-        buttonLoadMore.setEnabled(enable);
+    public void enableScrollListener(boolean enable) {
+        if (enable) {
+            recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener() {
+                @Override
+                public void onLoadMore(int page, int totalItemsCount) {
+                    Timber.d("onLoadMore " + page + " " + totalItemsCount);
+                    recyclerView.clearOnScrollListeners();
+                    presenter.loadArticles(totalItemsCount);
+                }
+            });
+        } else {
+            recyclerView.clearOnScrollListeners();
+        }
     }
 
     @Override

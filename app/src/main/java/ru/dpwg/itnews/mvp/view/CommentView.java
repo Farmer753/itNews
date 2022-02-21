@@ -31,7 +31,7 @@ public interface CommentView extends MvpView{
     void enableSwipeRefreshLayout(boolean enable);
 
     @AddToEndSingle
-    void enableButtonLoadMore(boolean enable);
+    void enableScrollListener(boolean enable);
 
     @AddToEndSingle
     void showButtonRetry(boolean show);
