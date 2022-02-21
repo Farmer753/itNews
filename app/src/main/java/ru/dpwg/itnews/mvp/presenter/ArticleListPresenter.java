@@ -68,12 +68,12 @@ public class ArticleListPresenter extends MvpPresenter<ArticleListView> {
                         getViewState().enableSwipeRefreshLayout(false);
                     }
                     getViewState().showButtonRetry(false);
-                    getViewState().enableButtonLoadMore(false);
+                    getViewState().enableScrollListener(false);
                 })
                 .doOnEvent((tokenResponse, throwable) -> {
                     getViewState().showSwipeRefreshLayout(false);
                     getViewState().showProgress(false);
-                    getViewState().enableButtonLoadMore(true);
+                    getViewState().enableScrollListener(true);
                     getViewState().enableSwipeRefreshLayout(true);
                 })
                 .subscribe(
