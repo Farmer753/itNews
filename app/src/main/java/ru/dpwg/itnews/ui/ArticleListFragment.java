@@ -71,7 +71,7 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
         buttonRetry = view.findViewById(R.id.buttonRetry);
         buttonRetry.setOnClickListener(v -> presenter.loadArticles(0));
         recyclerView = view.findViewById(R.id.recyclerView);
-        adapter = new ArticlesAdapter();
+        adapter = new ArticlesAdapter(article -> presenter.articleClick(article.id));
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         toolbar = view.findViewById(R.id.toolbar);

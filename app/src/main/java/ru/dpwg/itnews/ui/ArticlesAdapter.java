@@ -16,12 +16,21 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.dpwg.itnews.R;
-import ru.dpwg.itnews.domain.NwComment;
 import ru.dpwg.itnews.domain.article.NwArticle;
 
 public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHolder> {
 
+    public ArticlesAdapter(ArticleClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
+
+    public interface ArticleClickListener{
+        public void onClick (NwArticle article);
+    }
+
+
     private final List<NwArticle> articles = new ArrayList<>();
+    private ArticleClickListener clickListener;
 
     public void setArticles(List<NwArticle> articleList) {
         articles.clear();
@@ -42,6 +51,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHo
         holder.titleTextView.setText(articles.get(position).translations.get(0).title);
         holder.dateTextView.setText(articles.get(position).publishedDate);
         holder.articleTextView.setText(articles.get(position).translations.get(0).shortDescription);
+        holder.itemView.setOnClickListener(v -> clickListener.onClick(articles.get(position)));
         Glide.with(holder.articleImageView)
                 .load("https://dont-play-with-google.com:8443/api/" + articles.get(position).translations.get(0).imageUrl)
                 .into(holder.articleImageView);
