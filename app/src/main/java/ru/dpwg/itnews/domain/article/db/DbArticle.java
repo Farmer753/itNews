@@ -23,5 +23,5 @@ public class DbArticle {
     @ColumnInfo(name = "published_data")
     public String publishedDate;
     @Ignore
-    public List<NwTranslation> translations;
+    public List<DbTranslation> translations;
 }

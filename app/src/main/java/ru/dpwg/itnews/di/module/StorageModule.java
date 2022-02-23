@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import ru.dpwg.itnews.domain.ItNewsDatabase;
+import ru.dpwg.itnews.domain.article.DbArticleConverter;
 import ru.dpwg.itnews.domain.article.db.ArticleDao;
 import toothpick.config.Module;
 
@@ -19,5 +20,6 @@ public class StorageModule extends Module {
                 context, ItNewsDatabase.class, "it_news_database"
         ).allowMainThreadQueries().build();
         bind(ArticleDao.class).toInstance(itNewsDatabase.getArticleDao());
+        bind(DbArticleConverter.class).to(DbArticleConverter.class);
     }
 }

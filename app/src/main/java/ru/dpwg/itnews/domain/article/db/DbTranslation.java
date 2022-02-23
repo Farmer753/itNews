@@ -24,5 +24,5 @@ public class DbTranslation {
     @ColumnInfo(name = "published_date")
     public String publishedDate;
     @Ignore
-    public List<NwVersion> versions;
+    public List<DbVersion> versions;
 }
