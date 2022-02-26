@@ -24,4 +24,17 @@ public class DbArticle {
     public String publishedDate;
     @Ignore
     public List<DbTranslation> translations;
+
+    @Override
+    public String toString() {
+        return "DbArticle{" +
+                "id=" + id +
+                ", originalLangId=" + originalLangId +
+                ", sourceTitle='" + sourceTitle + '\'' +
+                ", sourceUrl='" + sourceUrl + '\'' +
+                ", sourceAuthorName='" + sourceAuthorName + '\'' +
+                ", publishedDate='" + publishedDate + '\'' +
+                ", translations=" + translations +
+                '}';
+    }
 }

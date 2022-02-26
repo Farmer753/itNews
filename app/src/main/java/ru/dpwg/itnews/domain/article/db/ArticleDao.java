@@ -8,15 +8,17 @@ import androidx.room.Query;
 import io.reactivex.rxjava3.core.Flowable;
 import timber.log.Timber;
 
+import static androidx.room.OnConflictStrategy.REPLACE;
+
 @Dao
 public abstract class ArticleDao {
-    @Insert
+    @Insert(onConflict = REPLACE)
     public abstract void insertTextVersions(List<DbVersion> dbVersions);
 
-    @Insert
+    @Insert(onConflict = REPLACE)
     public abstract void insertArticle(DbArticle dbArticle);
 
-    @Insert
+    @Insert(onConflict = REPLACE)
     public abstract void insertTranslation(DbTranslation dbTranslation);
 
     @Query("Select * from ARTICLES where id = :id")

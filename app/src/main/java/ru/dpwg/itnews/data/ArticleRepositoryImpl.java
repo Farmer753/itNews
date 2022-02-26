@@ -6,16 +6,22 @@ import java.util.Random;
 
 import javax.inject.Inject;
 
-import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
 import ru.dpwg.itnews.domain.article.ArticleRepository;
 import ru.dpwg.itnews.domain.article.NwArticle;
 import ru.dpwg.itnews.domain.article.NwTranslation;
 import ru.dpwg.itnews.domain.article.NwVersion;
+import ru.dpwg.itnews.domain.article.db.ArticleDao;
+import ru.dpwg.itnews.domain.article.db.DbArticle;
 
 public class ArticleRepositoryImpl implements ArticleRepository {
+
+    private ArticleDao articleDao;
+
     @Inject
-    public ArticleRepositoryImpl() {
+    public ArticleRepositoryImpl(ArticleDao articleDao) {
+        this.articleDao = articleDao;
     }
 
     @Override
@@ -47,6 +53,16 @@ public class ArticleRepositoryImpl implements ArticleRepository {
                 emitter.onError(new IllegalStateException("сообщение об ошибке"));
             }
         });
+    }
+
+    @Override
+    public Flowable<List<DbArticle>> getArticles() {
+        return articleDao.findAllArticlesFull();
+    }
+
+    @Override
+    public void insertArticles(List<DbArticle> dbArticles) {
+        articleDao.insertArticlesFull(dbArticles);
     }
 
     private NwArticle generateArticle(int id) {

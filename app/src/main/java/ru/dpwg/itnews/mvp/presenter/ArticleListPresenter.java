@@ -13,7 +13,9 @@ import moxy.MvpPresenter;
 import ru.dpwg.itnews.Screens;
 import ru.dpwg.itnews.domain.SessionRepository;
 import ru.dpwg.itnews.domain.article.ArticleRepository;
+import ru.dpwg.itnews.domain.article.DbArticleConverter;
 import ru.dpwg.itnews.domain.article.NwArticle;
+import ru.dpwg.itnews.domain.article.db.DbArticle;
 import ru.dpwg.itnews.mvp.view.ArticleListView;
 import timber.log.Timber;
 
@@ -21,6 +23,7 @@ public class ArticleListPresenter extends MvpPresenter<ArticleListView> {
     private Router router;
     private SessionRepository sessionRepository;
     private ArticleRepository articleRepository;
+    private DbArticleConverter converter;
     final static int LIMIT = 10;
     private List<NwArticle> articles = new ArrayList<>();
 
@@ -29,17 +32,23 @@ public class ArticleListPresenter extends MvpPresenter<ArticleListView> {
     public ArticleListPresenter(
             Router router,
             SessionRepository sessionRepository,
-            ArticleRepository articleRepository
-    ) {
+            ArticleRepository articleRepository,
+            DbArticleConverter converter) {
         this.router = router;
         this.sessionRepository = sessionRepository;
         this.articleRepository = articleRepository;
+        this.converter = converter;
     }
 
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         loadArticles(0);
+        articleRepository
+                .getArticles()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(dbArticles -> Timber.d("статьи из базы данных: " + dbArticles));
     }
 
     public void profileClick() {
@@ -59,6 +68,13 @@ public class ArticleListPresenter extends MvpPresenter<ArticleListView> {
         articleRepository
                 .loadArticles(LIMIT, offset)
                 .subscribeOn(Schedulers.io())
+                .doOnSuccess(nwArticles -> {
+                    List<DbArticle> dbArticles = new ArrayList<>();
+                    for (NwArticle nwArticle: nwArticles){
+                        dbArticles.add(converter.convert(nwArticle));
+                    }
+                    articleRepository.insertArticles(dbArticles);
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> {
                     if (offset == 0) {

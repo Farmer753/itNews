@@ -2,11 +2,17 @@ package ru.dpwg.itnews.domain.article;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import ru.dpwg.itnews.domain.article.db.DbArticle;
 import ru.dpwg.itnews.domain.article.db.DbTranslation;
 import ru.dpwg.itnews.domain.article.db.DbVersion;
 
 public class DbArticleConverter {
+
+    @Inject
+    public DbArticleConverter() {
+    }
 
     public DbArticle convert(NwArticle data) {
         DbArticle dbArticle = new DbArticle();
