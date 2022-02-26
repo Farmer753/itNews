@@ -20,7 +20,7 @@ public class DbArticle {
     public String sourceUrl;
     @ColumnInfo(name = "source_author_name")
     public String sourceAuthorName;
-    @ColumnInfo(name = "published_data")
+    @ColumnInfo(name = "published_date")
     public String publishedDate;
     @Ignore
     public List<DbTranslation> translations;
