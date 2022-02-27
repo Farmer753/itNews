@@ -1,12 +1,14 @@
 package ru.dpwg.itnews.domain.article;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import ru.dpwg.itnews.domain.article.db.DbArticle;
 import ru.dpwg.itnews.domain.article.db.DbTranslation;
 import ru.dpwg.itnews.domain.article.db.DbVersion;
+import ru.dpwg.itnews.domain.article.nw.NwArticle;
 import ru.dpwg.itnews.domain.article.ui.UiArticle;
 import ru.dpwg.itnews.domain.article.ui.UiTranslation;
 import ru.dpwg.itnews.domain.article.ui.UiVersion;
@@ -56,5 +58,13 @@ public class UiArticleConverter {
         uiVersion.publishedDate = data.publishedDate;
         uiVersion.text = data.text;
         return uiVersion;
+    }
+
+    public List<UiArticle> convert (List<DbArticle> data){
+        List<UiArticle> uiArticles = new ArrayList<>();
+        for (DbArticle dbArticle: data){
+            uiArticles.add(convert(dbArticle));
+        }
+        return uiArticles;
     }
 }

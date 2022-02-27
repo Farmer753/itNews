@@ -25,6 +25,7 @@ import moxy.presenter.ProvidePresenter;
 import ru.dpwg.itnews.R;
 import ru.dpwg.itnews.di.Di;
 import ru.dpwg.itnews.domain.article.nw.NwArticle;
+import ru.dpwg.itnews.domain.article.ui.UiArticle;
 import ru.dpwg.itnews.mvp.presenter.ArticleListPresenter;
 import ru.dpwg.itnews.mvp.view.ArticleListView;
 import ru.dpwg.itnews.ui.util.EndlessRecyclerViewScrollListener;
@@ -100,7 +101,7 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
     }
 
     @Override
-    public void showArticles(List<NwArticle> articles) {
+    public void showArticles(List<UiArticle> articles) {
         adapter.setArticles(articles);
     }
 

@@ -1,6 +1,7 @@
 package ru.dpwg.itnews.domain.article;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -55,5 +56,13 @@ public class DbArticleConverter {
         dbVersion.publishedDate = data.publishedDate;
         dbVersion.text = data.text;
         return dbVersion;
+    }
+
+    public List<DbArticle> convert (List<NwArticle> data){
+        List<DbArticle> dbArticles = new ArrayList<>();
+        for (NwArticle nwArticle: data){
+            dbArticles.add(convert(nwArticle));
+        }
+        return dbArticles;
     }
 }

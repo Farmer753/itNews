@@ -5,6 +5,7 @@ import java.util.List;
 import moxy.MvpView;
 import moxy.viewstate.strategy.alias.AddToEndSingle;
 import ru.dpwg.itnews.domain.article.nw.NwArticle;
+import ru.dpwg.itnews.domain.article.ui.UiArticle;
 
 public interface ArticleListView extends MvpView {
 
@@ -18,7 +19,7 @@ public interface ArticleListView extends MvpView {
     void showMessage(String message);
 
     @AddToEndSingle
-    void showArticles(List<NwArticle> articles);
+    void showArticles(List<UiArticle> articles);
 
     @AddToEndSingle
     void showSwipeRefreshLayout(boolean show);
