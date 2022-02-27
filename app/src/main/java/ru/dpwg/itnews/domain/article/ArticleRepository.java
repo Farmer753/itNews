@@ -11,4 +11,5 @@ public interface ArticleRepository {
     Single<List<NwArticle>> loadArticles(int limit, int offset);
     Flowable<List<DbArticle>> getArticles();
     void insertArticles(List<DbArticle> dbArticles);
+    void deleteAll();
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import io.reactivex.rxjava3.core.Flowable;
 import timber.log.Timber;
 
@@ -59,11 +60,26 @@ public abstract class ArticleDao {
         }
     }
 
+    @Transaction
     public void insertArticlesFull(List<DbArticle> dbArticles) {
         for (DbArticle dbArticle : dbArticles) {
             insertArticleFull(dbArticle);
         }
     }
+    @Query("delete from articles")
+    public abstract void deleteArticles();
 
+    @Query("delete from translations")
+    public abstract void deleteTranslations();
+
+    @Query("delete from versions")
+    public abstract void deleteVersions();
+
+
+    public void deleteAll() {
+        deleteVersions();
+        deleteTranslations();
+        deleteArticles();
+    }
 
 }

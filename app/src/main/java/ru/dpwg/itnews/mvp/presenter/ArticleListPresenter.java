@@ -69,6 +69,9 @@ public class ArticleListPresenter extends MvpPresenter<ArticleListView> {
                 .loadArticles(LIMIT, offset)
                 .subscribeOn(Schedulers.io())
                 .doOnSuccess(nwArticles -> {
+                    if (offset == 0) {
+                        articleRepository.deleteAll();
+                    }
                     List<DbArticle> dbArticles = new ArrayList<>();
                     for (NwArticle nwArticle: nwArticles){
                         dbArticles.add(converter.convert(nwArticle));

@@ -65,6 +65,11 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         articleDao.insertArticlesFull(dbArticles);
     }
 
+    @Override
+    public void deleteAll() {
+        articleDao.deleteAll();
+    }
+
     private NwArticle generateArticle(int id) {
         NwArticle nwArticle = new NwArticle();
         nwArticle.id = id;
