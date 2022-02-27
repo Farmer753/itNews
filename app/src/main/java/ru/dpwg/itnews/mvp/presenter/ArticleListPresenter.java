@@ -26,6 +26,7 @@ public class ArticleListPresenter extends MvpPresenter<ArticleListView> {
     private DbArticleConverter dbConverter;
     private UiArticleConverter uiConverter;
     final static int LIMIT = 10;
+    boolean articlesExistsInDb;
 
 
     @Inject
@@ -50,7 +51,11 @@ public class ArticleListPresenter extends MvpPresenter<ArticleListView> {
                 .map(dbArticles -> uiConverter.convert(dbArticles))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(uiArticles -> getViewState().showArticles(uiArticles));
+                .subscribe(uiArticles -> {
+                    articlesExistsInDb = !uiArticles.isEmpty();
+                    getViewState().showArticles(uiArticles);
+                });
+
     }
 
     public void profileClick() {
@@ -99,7 +104,7 @@ public class ArticleListPresenter extends MvpPresenter<ArticleListView> {
                         error -> {
                             Timber.e(error);
                             getViewState().showMessage(error.getMessage());
-                            if (offset == 0) {
+                            if (offset == 0 && !articlesExistsInDb) {
                                 getViewState().showButtonRetry(true);
                             }
                         }
