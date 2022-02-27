@@ -14,7 +14,7 @@ import ru.dpwg.itnews.Screens;
 import ru.dpwg.itnews.domain.SessionRepository;
 import ru.dpwg.itnews.domain.article.ArticleRepository;
 import ru.dpwg.itnews.domain.article.DbArticleConverter;
-import ru.dpwg.itnews.domain.article.NwArticle;
+import ru.dpwg.itnews.domain.article.nw.NwArticle;
 import ru.dpwg.itnews.domain.article.db.DbArticle;
 import ru.dpwg.itnews.mvp.view.ArticleListView;
 import timber.log.Timber;

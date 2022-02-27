@@ -4,7 +4,7 @@ import java.util.List;
 
 import moxy.MvpView;
 import moxy.viewstate.strategy.alias.AddToEndSingle;
-import ru.dpwg.itnews.domain.article.NwArticle;
+import ru.dpwg.itnews.domain.article.nw.NwArticle;
 
 public interface ArticleListView extends MvpView {
 

@@ -7,6 +7,9 @@ import javax.inject.Inject;
 import ru.dpwg.itnews.domain.article.db.DbArticle;
 import ru.dpwg.itnews.domain.article.db.DbTranslation;
 import ru.dpwg.itnews.domain.article.db.DbVersion;
+import ru.dpwg.itnews.domain.article.nw.NwArticle;
+import ru.dpwg.itnews.domain.article.nw.NwTranslation;
+import ru.dpwg.itnews.domain.article.nw.NwVersion;
 
 public class DbArticleConverter {
 

@@ -5,6 +5,7 @@ import java.util.List;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
 import ru.dpwg.itnews.domain.article.db.DbArticle;
+import ru.dpwg.itnews.domain.article.nw.NwArticle;
 
 public interface ArticleRepository {
     Single<NwArticle> loadArticleById(int id);

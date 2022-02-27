@@ -9,9 +9,9 @@ import javax.inject.Inject;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
 import ru.dpwg.itnews.domain.article.ArticleRepository;
-import ru.dpwg.itnews.domain.article.NwArticle;
-import ru.dpwg.itnews.domain.article.NwTranslation;
-import ru.dpwg.itnews.domain.article.NwVersion;
+import ru.dpwg.itnews.domain.article.nw.NwArticle;
+import ru.dpwg.itnews.domain.article.nw.NwTranslation;
+import ru.dpwg.itnews.domain.article.nw.NwVersion;
 import ru.dpwg.itnews.domain.article.db.ArticleDao;
 import ru.dpwg.itnews.domain.article.db.DbArticle;
 

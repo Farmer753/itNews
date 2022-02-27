@@ -18,7 +18,7 @@ import moxy.presenter.InjectPresenter;
 import moxy.presenter.ProvidePresenter;
 import ru.dpwg.itnews.R;
 import ru.dpwg.itnews.di.Di;
-import ru.dpwg.itnews.domain.article.NwArticle;
+import ru.dpwg.itnews.domain.article.nw.NwArticle;
 import ru.dpwg.itnews.mvp.presenter.ArticlePresenter;
 import ru.dpwg.itnews.mvp.view.ArticleView;
 import timber.log.Timber;
