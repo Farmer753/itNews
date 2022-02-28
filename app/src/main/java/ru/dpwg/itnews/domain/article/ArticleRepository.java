@@ -13,4 +13,6 @@ public interface ArticleRepository {
     Flowable<List<DbArticle>> getArticles();
     void insertArticles(List<DbArticle> dbArticles);
     void deleteAll();
+    Single<DbArticle> getArticleById(int id);
+    void insertArticle(DbArticle article);
 }

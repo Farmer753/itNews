@@ -70,6 +70,16 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         articleDao.deleteAll();
     }
 
+    @Override
+    public Single<DbArticle> getArticleById(int id) {
+        return articleDao.getArticleById(id);
+    }
+
+    @Override
+    public void insertArticle(DbArticle article) {
+
+    }
+
     private NwArticle generateArticle(int id) {
         NwArticle nwArticle = new NwArticle();
         nwArticle.id = id;

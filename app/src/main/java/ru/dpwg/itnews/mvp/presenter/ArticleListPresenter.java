@@ -34,7 +34,9 @@ public class ArticleListPresenter extends MvpPresenter<ArticleListView> {
             Router router,
             SessionRepository sessionRepository,
             ArticleRepository articleRepository,
-            DbArticleConverter converter, UiArticleConverter uiConverter) {
+            DbArticleConverter converter,
+            UiArticleConverter uiConverter
+    ) {
         this.router = router;
         this.sessionRepository = sessionRepository;
         this.articleRepository = articleRepository;

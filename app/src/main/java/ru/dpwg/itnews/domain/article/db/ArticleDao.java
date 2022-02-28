@@ -7,6 +7,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Transaction;
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Single;
 import timber.log.Timber;
 
 import static androidx.room.OnConflictStrategy.REPLACE;
@@ -23,7 +24,7 @@ public abstract class ArticleDao {
     public abstract void insertTranslation(DbTranslation dbTranslation);
 
     @Query("Select * from ARTICLES where id = :id")
-    public abstract Flowable<DbArticle> findById(int id);
+    public abstract Single<DbArticle> findById(int id);
 
     @Query("select * from articles order by published_date desc")
     public abstract Flowable<List<DbArticle>> findAllArticles();
@@ -66,6 +67,7 @@ public abstract class ArticleDao {
             insertArticleFull(dbArticle);
         }
     }
+
     @Query("delete from articles")
     public abstract void deleteArticles();
 
@@ -82,4 +84,18 @@ public abstract class ArticleDao {
         deleteArticles();
     }
 
+    public Single<DbArticle> getArticleById(int id) {
+        return findById(id)
+                .map(dbArticle -> {
+                    List<DbTranslation> dbTranslations
+                            = findAllTranslationByArticleId(dbArticle.id);
+                    dbArticle.translations = dbTranslations;
+                    for (DbTranslation dbTranslation : dbTranslations) {
+                        List<DbVersion> dbVersions
+                                = findAllVersionByTranslationId(dbTranslation.id);
+                        dbTranslation.versions = dbVersions;
+                    }
+                    return dbArticle;
+                });
+    }
 }
