@@ -51,6 +51,7 @@ public class ArticlePresenter extends MvpPresenter<ArticleView> {
         articleRepository.getArticleById(id)
                 .flatMap(dbArticle -> {
                     if (dbArticle.translations.get(0).versions.isEmpty()) {
+                        Timber.d("Версии текста для статьи нет");
                         return articleRepository.loadArticleById(id)
                                 .doOnSuccess(nwArticle -> {
                                     DbArticle article = dbConverter.convert(nwArticle);
@@ -58,6 +59,7 @@ public class ArticlePresenter extends MvpPresenter<ArticleView> {
                                 })
                                 .flatMap(nwArticle -> articleRepository.getArticleById(id));
                     } else {
+                        Timber.d("Версии текста для статьи есть");
                         return Single.just(dbArticle);
                     }
                 })
