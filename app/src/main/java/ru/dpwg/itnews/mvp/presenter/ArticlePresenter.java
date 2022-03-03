@@ -47,7 +47,22 @@ public class ArticlePresenter extends MvpPresenter<ArticleView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         Timber.d(id + "");
-//        loadArticle();
+        getArticle();
+    }
+
+    public void commentClick() {
+        router.navigateTo(new Screens.CommentScreen(id));
+    }
+
+    public void profileClick() {
+        if (sessionRepository.getAccessToken() == null) {
+            router.navigateTo(new Screens.LoginScreen());
+        } else {
+            router.navigateTo(new Screens.ProfileScreen());
+        }
+    }
+
+    public void getArticle() {
         articleRepository.getArticleById(id)
                 .flatMap(dbArticle -> {
                     if (dbArticle.translations.get(0).versions.isEmpty()) {
@@ -66,52 +81,22 @@ public class ArticlePresenter extends MvpPresenter<ArticleView> {
                 .map(dbArticle -> uiConverter.convert(dbArticle))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        uiArticle -> {
-                            Timber.d("Версия текста первого перевода статьи из БД"
-                                    + uiArticle.translations.get(0).versions.get(0).text);
-                        },
-                        throwable -> {
-                            Timber.e(throwable);
-                        }
-                );
-    }
-
-    public void loadArticle() {
-        articleRepository
-                .loadArticleById(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> {
                     getViewState().showProgress(true);
                     getViewState().showButtonRetry(false);
                 })
                 .doOnEvent((tokenResponse, throwable) -> getViewState().showProgress(false))
                 .subscribe(
-                        nwArticle -> {
-                            Timber.d(nwArticle.translations.get(0).versions.get(0).text);
-                            getViewState().showArticle(nwArticle);
+                        uiArticle -> {
+                            Timber.d("Версия текста первого перевода статьи из БД"
+                                    + uiArticle.translations.get(0).versions.get(0).text);
+                            getViewState().showArticle(uiArticle);
                         },
-                        error -> {
-                            Timber.e(error);
-                            getViewState().showMessage(error.getMessage());
+                        throwable -> {
+                            Timber.e(throwable);
+                            getViewState().showMessage(throwable.getMessage());
                             getViewState().showButtonRetry(true);
                         }
                 );
-
-
-    }
-
-    public void commentClick() {
-        router.navigateTo(new Screens.CommentScreen(id));
-
-    }
-
-    public void profileClick() {
-        if (sessionRepository.getAccessToken() == null) {
-            router.navigateTo(new Screens.LoginScreen());
-        } else {
-            router.navigateTo(new Screens.ProfileScreen());
-        }
     }
 }
