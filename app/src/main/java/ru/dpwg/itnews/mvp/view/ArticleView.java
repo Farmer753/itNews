@@ -2,7 +2,8 @@ package ru.dpwg.itnews.mvp.view;
 
 import moxy.MvpView;
 import moxy.viewstate.strategy.alias.AddToEndSingle;
-import ru.dpwg.itnews.domain.article.NwArticle;
+import ru.dpwg.itnews.domain.article.nw.NwArticle;
+import ru.dpwg.itnews.domain.article.ui.UiArticle;
 
 
 public interface ArticleView extends MvpView {
@@ -18,6 +19,6 @@ public interface ArticleView extends MvpView {
     void showMessage(String message);
 
     @AddToEndSingle
-    void showArticle(NwArticle nwArticle);
+    void showArticle(UiArticle uiArticle);
 
 }

@@ -5,7 +5,6 @@ import java.util.List;
 import moxy.MvpView;
 import moxy.viewstate.strategy.alias.AddToEndSingle;
 import ru.dpwg.itnews.domain.NwComment;
-import ru.dpwg.itnews.domain.article.NwArticle;
 
 public interface CommentView extends MvpView{
 

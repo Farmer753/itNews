@@ -6,16 +6,22 @@ import java.util.Random;
 
 import javax.inject.Inject;
 
-import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
 import ru.dpwg.itnews.domain.article.ArticleRepository;
-import ru.dpwg.itnews.domain.article.NwArticle;
-import ru.dpwg.itnews.domain.article.NwTranslation;
-import ru.dpwg.itnews.domain.article.NwVersion;
+import ru.dpwg.itnews.domain.article.nw.NwArticle;
+import ru.dpwg.itnews.domain.article.nw.NwTranslation;
+import ru.dpwg.itnews.domain.article.nw.NwVersion;
+import ru.dpwg.itnews.domain.article.db.ArticleDao;
+import ru.dpwg.itnews.domain.article.db.DbArticle;
 
 public class ArticleRepositoryImpl implements ArticleRepository {
+
+    private ArticleDao articleDao;
+
     @Inject
-    public ArticleRepositoryImpl() {
+    public ArticleRepositoryImpl(ArticleDao articleDao) {
+        this.articleDao = articleDao;
     }
 
     @Override
@@ -25,7 +31,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
             Random random = new Random();
             if (random.nextBoolean()) {
-                emitter.onSuccess(generateArticle(id));
+                emitter.onSuccess(generateArticle(id, true));
             } else {
                 emitter.onError(new IllegalStateException("сообщение об ошибке"));
             }
@@ -40,7 +46,10 @@ public class ArticleRepositoryImpl implements ArticleRepository {
             if (random.nextBoolean()) {
                 List<NwArticle> articleList = new ArrayList<>();
                 for (int i = 0; i < limit; i++) {
-                    articleList.add(generateArticle(i + offset));
+                    articleList.add(generateArticle(
+                            i + offset,
+                            (i + offset) == 0)
+                    );
                 }
                 emitter.onSuccess(articleList);
             } else {
@@ -49,7 +58,32 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         });
     }
 
-    private NwArticle generateArticle(int id) {
+    @Override
+    public Flowable<List<DbArticle>> getArticles() {
+        return articleDao.findAllArticlesFull();
+    }
+
+    @Override
+    public void insertArticles(List<DbArticle> dbArticles) {
+        articleDao.insertArticlesFull(dbArticles);
+    }
+
+    @Override
+    public void deleteAll() {
+        articleDao.deleteAll();
+    }
+
+    @Override
+    public Single<DbArticle> getArticleById(int id) {
+        return articleDao.getArticleById(id);
+    }
+
+    @Override
+    public void insertArticle(DbArticle article) {
+        articleDao.insertArticleFull(article);
+    }
+
+    private NwArticle generateArticle(int id, boolean generateTextVersion) {
         NwArticle nwArticle = new NwArticle();
         nwArticle.id = id;
         nwArticle.originalLangId = 2;
@@ -61,19 +95,21 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         NwTranslation nwTranslation = new NwTranslation();
         nwArticle.translations.add(nwTranslation);
         nwTranslation.articleId = id;
-        nwTranslation.id = id*10;
+        nwTranslation.id = id * 10;
         nwTranslation.langId = 2;
         nwTranslation.title = "Title " + id;
         nwTranslation.shortDescription = "I have been developing android apps since 2017";
         nwTranslation.imageUrl = "image/10/jgfj3szt8tf81-1644059661975.jpg";
         nwTranslation.publishedDate = "2022-02-05T14:14:47.285Z";
         nwTranslation.versions = new ArrayList<>();
-        NwVersion nwVersion = new NwVersion();
-        nwTranslation.versions.add(nwVersion);
-        nwVersion.id = id*100;
-        nwVersion.articleTranslationId = id*10;
-        nwVersion.text = "Текст статьи";
-        nwVersion.publishedDate = "2022-02-05T14:14:47.285Z";
+        if (generateTextVersion) {
+            NwVersion nwVersion = new NwVersion();
+            nwTranslation.versions.add(nwVersion);
+            nwVersion.id = id * 100;
+            nwVersion.articleTranslationId = id * 10;
+            nwVersion.text = "Текст статьи";
+            nwVersion.publishedDate = "2022-02-05T14:14:47.285Z";
+        }
         return nwArticle;
     }
 }

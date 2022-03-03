@@ -47,7 +47,6 @@ public class CommentFragment extends MvpAppCompatFragment implements CommentView
     ImageView sendComment;
     View commentInput;
     Button buttonRetry;
-    Button buttonLoadMore;
     SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView recyclerView;
 
@@ -84,7 +83,6 @@ public class CommentFragment extends MvpAppCompatFragment implements CommentView
         recyclerView.setAdapter(adapter);
         buttonRetry = view.findViewById(R.id.buttonRetry);
         buttonRetry.setOnClickListener(v -> presenter.loadComment(0));
-        buttonLoadMore.setOnClickListener(v -> presenter.loadComment(adapter.getItemCount()));
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(v -> presenter.onBackClick());
         toolbar.inflateMenu(R.menu.menu_profile);

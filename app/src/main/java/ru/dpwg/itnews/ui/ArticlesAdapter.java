@@ -16,7 +16,8 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.dpwg.itnews.R;
-import ru.dpwg.itnews.domain.article.NwArticle;
+import ru.dpwg.itnews.domain.article.ui.UiArticle;
+
 
 public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHolder> {
 
@@ -25,14 +26,14 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHo
     }
 
     public interface ArticleClickListener{
-        public void onClick (NwArticle article);
+        public void onClick (UiArticle article);
     }
 
 
-    private final List<NwArticle> articles = new ArrayList<>();
+    private final List<UiArticle> articles = new ArrayList<>();
     private ArticleClickListener clickListener;
 
-    public void setArticles(List<NwArticle> articleList) {
+    public void setArticles(List<UiArticle> articleList) {
         articles.clear();
         articles.addAll(articleList);
         notifyDataSetChanged();

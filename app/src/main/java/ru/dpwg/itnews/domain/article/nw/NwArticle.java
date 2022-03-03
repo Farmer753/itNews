@@ -1,4 +1,4 @@
-package ru.dpwg.itnews.domain.article;
+package ru.dpwg.itnews.domain.article.nw;
 
 import java.util.List;
 

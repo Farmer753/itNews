@@ -1,4 +1,4 @@
-package ru.dpwg.itnews.domain.article;
+package ru.dpwg.itnews.domain.article.nw;
 
 public class NwVersion {
     public int id;

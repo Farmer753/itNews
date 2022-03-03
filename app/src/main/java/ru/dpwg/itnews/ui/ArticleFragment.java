@@ -18,7 +18,8 @@ import moxy.presenter.InjectPresenter;
 import moxy.presenter.ProvidePresenter;
 import ru.dpwg.itnews.R;
 import ru.dpwg.itnews.di.Di;
-import ru.dpwg.itnews.domain.article.NwArticle;
+import ru.dpwg.itnews.domain.article.nw.NwArticle;
+import ru.dpwg.itnews.domain.article.ui.UiArticle;
 import ru.dpwg.itnews.mvp.presenter.ArticlePresenter;
 import ru.dpwg.itnews.mvp.view.ArticleView;
 import timber.log.Timber;
@@ -62,7 +63,7 @@ public class ArticleFragment extends MvpAppCompatFragment implements ArticleView
         textView = view.findViewById(R.id.article);
         progressView = view.findViewById(R.id.progressView);
         buttonRetry = view.findViewById(R.id.buttonRetry);
-        buttonRetry.setOnClickListener(v -> presenter.loadArticle());
+        buttonRetry.setOnClickListener(v -> presenter.getArticle());
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(v -> presenter.onBackClick());
         toolbar.inflateMenu(R.menu.menu_profile);
@@ -93,9 +94,9 @@ public class ArticleFragment extends MvpAppCompatFragment implements ArticleView
     }
 
     @Override
-    public void showArticle(NwArticle nwArticle) {
-        textView.setText(nwArticle.translations.get(0).versions.get(0).text);
-        toolbar.setTitle(nwArticle.translations.get(0).title);
+    public void showArticle(UiArticle uiArticle) {
+        textView.setText(uiArticle.translations.get(0).versions.get(0).text);
+        toolbar.setTitle(uiArticle.translations.get(0).title);
     }
 
 
