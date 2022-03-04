@@ -16,6 +16,7 @@ import ru.dpwg.itnews.domain.article.ArticleRepository;
 import ru.dpwg.itnews.domain.article.DbArticleConverter;
 import ru.dpwg.itnews.domain.article.UiArticleConverter;
 import ru.dpwg.itnews.domain.article.nw.NwArticle;
+import ru.dpwg.itnews.domain.article.ui.UiArticle;
 import ru.dpwg.itnews.mvp.view.ArticleListView;
 import timber.log.Timber;
 
@@ -56,6 +57,11 @@ public class ArticleListPresenter extends MvpPresenter<ArticleListView> {
                 .subscribe(uiArticles -> {
                     articlesExistsInDb = !uiArticles.isEmpty();
                     getViewState().showArticles(uiArticles);
+                    for (UiArticle uiArticle : uiArticles) {
+                        Timber.d(
+                                "Статья " + uiArticle.id + "/ " +
+                                        uiArticle.translations.size());
+                    }
                 });
 
     }
