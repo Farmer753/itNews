@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import moxy.MvpAppCompatFragment;
 import moxy.presenter.InjectPresenter;
 import moxy.presenter.ProvidePresenter;
 import ru.dpwg.itnews.R;
+import ru.dpwg.itnews.Util;
 import ru.dpwg.itnews.di.Di;
 import ru.dpwg.itnews.domain.article.nw.NwArticle;
 import ru.dpwg.itnews.domain.article.ui.UiArticle;
@@ -103,10 +105,10 @@ public class ArticleFragment extends MvpAppCompatFragment implements ArticleView
         toolbar.setTitle(uiArticle.translations.get(0).title);
         translationContainer.removeAllViews();
         for (UiTranslation translation : uiArticle.translations) {
-            TextView view = (TextView) getLayoutInflater().inflate(
+            ImageView view = (ImageView) getLayoutInflater().inflate(
                     R.layout.view_translation_language, translationContainer, false
             );
-            view.setText(translation.langId + "");
+            view.setImageResource(Util.getFlagByLangId(translation.langId));
             view.setOnClickListener(view1 -> textView.setText(translation.versions.get(0).text));
             translationContainer.addView(view);
         }
