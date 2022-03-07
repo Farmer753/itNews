@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,9 +19,11 @@ import moxy.MvpAppCompatFragment;
 import moxy.presenter.InjectPresenter;
 import moxy.presenter.ProvidePresenter;
 import ru.dpwg.itnews.R;
+import ru.dpwg.itnews.Util;
 import ru.dpwg.itnews.di.Di;
 import ru.dpwg.itnews.domain.article.nw.NwArticle;
 import ru.dpwg.itnews.domain.article.ui.UiArticle;
+import ru.dpwg.itnews.domain.article.ui.UiTranslation;
 import ru.dpwg.itnews.mvp.presenter.ArticlePresenter;
 import ru.dpwg.itnews.mvp.view.ArticleView;
 import timber.log.Timber;
@@ -34,6 +38,7 @@ public class ArticleFragment extends MvpAppCompatFragment implements ArticleView
     Button commentButton;
     View progressView;
     Button buttonRetry;
+    LinearLayout translationContainer;
 
 
     @ProvidePresenter
@@ -64,6 +69,7 @@ public class ArticleFragment extends MvpAppCompatFragment implements ArticleView
         progressView = view.findViewById(R.id.progressView);
         buttonRetry = view.findViewById(R.id.buttonRetry);
         buttonRetry.setOnClickListener(v -> presenter.getArticle());
+        translationContainer = view.findViewById(R.id.translationContainer);
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(v -> presenter.onBackClick());
         toolbar.inflateMenu(R.menu.menu_profile);
@@ -97,8 +103,16 @@ public class ArticleFragment extends MvpAppCompatFragment implements ArticleView
     public void showArticle(UiArticle uiArticle) {
         textView.setText(uiArticle.translations.get(0).versions.get(0).text);
         toolbar.setTitle(uiArticle.translations.get(0).title);
+        translationContainer.removeAllViews();
+        for (UiTranslation translation : uiArticle.translations) {
+            ImageView view = (ImageView) getLayoutInflater().inflate(
+                    R.layout.view_translation_language, translationContainer, false
+            );
+            view.setImageResource(Util.getFlagByLangId(translation.langId));
+            view.setOnClickListener(view1 -> textView.setText(translation.versions.get(0).text));
+            translationContainer.addView(view);
+        }
     }
-
 
 
     @Override

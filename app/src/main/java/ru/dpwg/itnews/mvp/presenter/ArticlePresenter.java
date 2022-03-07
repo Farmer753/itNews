@@ -88,9 +88,11 @@ public class ArticlePresenter extends MvpPresenter<ArticleView> {
                 .doOnEvent((tokenResponse, throwable) -> getViewState().showProgress(false))
                 .subscribe(
                         uiArticle -> {
-                            Timber.d("Версия текста первого перевода статьи из БД"
+                            Timber.d("Версия текста первого перевода статьи из БД "
                                     + uiArticle.translations.get(0).versions.get(0).text);
                             getViewState().showArticle(uiArticle);
+                            Timber.d("размер списка переводов статьи "
+                                    + uiArticle.translations.size());
                         },
                         throwable -> {
                             Timber.e(throwable);

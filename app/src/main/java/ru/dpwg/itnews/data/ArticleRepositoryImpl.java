@@ -110,6 +110,24 @@ public class ArticleRepositoryImpl implements ArticleRepository {
             nwVersion.text = "Текст статьи";
             nwVersion.publishedDate = "2022-02-05T14:14:47.285Z";
         }
+        if (generateTextVersion) {
+            NwTranslation nwTranslation1 = new NwTranslation();
+            nwArticle.translations.add(nwTranslation1);
+            nwTranslation1.articleId = id;
+            nwTranslation1.id = id * 10 + 1;
+            nwTranslation1.langId = 3;
+            nwTranslation1.title = "Title " + id;
+            nwTranslation1.shortDescription = "I have been developing android apps since 2017";
+            nwTranslation1.imageUrl = "image/10/jgfj3szt8tf81-1644059661975.jpg";
+            nwTranslation1.publishedDate = "2022-02-05T14:14:47.285Z";
+            nwTranslation1.versions = new ArrayList<>();
+            NwVersion nwVersion = new NwVersion();
+            nwTranslation1.versions.add(nwVersion);
+            nwVersion.id = id * 100 + 1;
+            nwVersion.articleTranslationId = id * 10 + 1;
+            nwVersion.text = "Текст статьи 1";
+            nwVersion.publishedDate = "2022-02-05T14:14:47.285Z";
+        }
         return nwArticle;
     }
 }
