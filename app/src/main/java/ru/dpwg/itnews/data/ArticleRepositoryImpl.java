@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
+import ru.dpwg.itnews.domain.article.ArticleApi;
 import ru.dpwg.itnews.domain.article.ArticleRepository;
 import ru.dpwg.itnews.domain.article.nw.NwArticle;
 import ru.dpwg.itnews.domain.article.nw.NwTranslation;
@@ -18,10 +19,12 @@ import ru.dpwg.itnews.domain.article.db.DbArticle;
 public class ArticleRepositoryImpl implements ArticleRepository {
 
     private ArticleDao articleDao;
+    private ArticleApi articleApi;
 
     @Inject
-    public ArticleRepositoryImpl(ArticleDao articleDao) {
+    public ArticleRepositoryImpl(ArticleDao articleDao, ArticleApi articleApi) {
         this.articleDao = articleDao;
+        this.articleApi = articleApi;
     }
 
     @Override
@@ -40,22 +43,24 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public Single<List<NwArticle>> loadArticles(int limit, int offset) {
-        return Single.create(emitter -> {
-            Thread.sleep(2000);
-            Random random = new Random();
-            if (random.nextBoolean()) {
-                List<NwArticle> articleList = new ArrayList<>();
-                for (int i = 0; i < limit; i++) {
-                    articleList.add(generateArticle(
-                            i + offset,
-                            (i + offset) == 0)
-                    );
-                }
-                emitter.onSuccess(articleList);
-            } else {
-                emitter.onError(new IllegalStateException("сообщение об ошибке"));
-            }
-        });
+//        return Single.create(emitter -> {
+//            Thread.sleep(2000);
+//            Random random = new Random();
+//            if (random.nextBoolean()) {
+//                List<NwArticle> articleList = new ArrayList<>();
+//                for (int i = 0; i < limit; i++) {
+//                    articleList.add(generateArticle(
+//                            i + offset,
+//                            (i + offset) == 0)
+//                    );
+//                }
+//                emitter.onSuccess(articleList);
+//            } else {
+//                emitter.onError(new IllegalStateException("сообщение об ошибке"));
+//            }
+//        });
+        return articleApi.loadArticles(limit, offset, true)
+                .map(articlesResponse -> articlesResponse.articles);
     }
 
     @Override

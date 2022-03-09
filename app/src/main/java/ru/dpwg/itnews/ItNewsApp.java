@@ -5,6 +5,7 @@ import android.app.Application;
 import ru.dpwg.itnews.di.module.ApplicationModule;
 import ru.dpwg.itnews.di.module.DomainModule;
 import ru.dpwg.itnews.di.module.NavigationModule;
+import ru.dpwg.itnews.di.module.NetworkModule;
 import ru.dpwg.itnews.di.module.StorageModule;
 import timber.log.Timber;
 import toothpick.Toothpick;
@@ -22,6 +23,7 @@ public class ItNewsApp extends Application {
                         new ApplicationModule(this),
                         new StorageModule(this),
                         new NavigationModule(),
+                        new NetworkModule(),
                         new DomainModule()
                 );
     }
