@@ -29,16 +29,18 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public Single<NwArticle> loadArticleById(int id) {
-        return Single.create(emitter -> {
-            Thread.sleep(2000);
+//        return Single.create(emitter -> {
+//            Thread.sleep(2000);
+//
+//            Random random = new Random();
+//            if (random.nextBoolean()) {
+//                emitter.onSuccess(generateArticle(id, true));
+//            } else {
+//                emitter.onError(new IllegalStateException("сообщение об ошибке"));
+//            }
+//        });
 
-            Random random = new Random();
-            if (random.nextBoolean()) {
-                emitter.onSuccess(generateArticle(id, true));
-            } else {
-                emitter.onError(new IllegalStateException("сообщение об ошибке"));
-            }
-        });
+        return articleApi.loadArticleById(id);
     }
 
     @Override
