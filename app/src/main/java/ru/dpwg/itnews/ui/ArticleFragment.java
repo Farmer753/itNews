@@ -116,7 +116,7 @@ public class ArticleFragment extends MvpAppCompatFragment implements ArticleView
                     R.layout.view_translation_language, translationContainer, false
             );
             view.setImageResource(Util.getFlagByLangId(translation.langId));
-            view.setOnClickListener(view1 -> textView.setText(translation.versions.get(0).text));
+            view.setOnClickListener(view1 -> markwon.setMarkdown(textView,translation.versions.get(0).text));
             translationContainer.addView(view);
         }
     }

@@ -4,4 +4,5 @@
     android:layout_width="48dp"
     android:layout_height="48dp"
     android:background="?selectableItemBackgroundBorderless"
-    tools:src="@drawable/ic_gb"/>
+    tools:src="@drawable/ic_gb"
+    android:layout_marginEnd="16dp" />
