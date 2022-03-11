@@ -15,6 +15,8 @@ import org.jetbrains.annotations.Nullable;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
+import io.noties.markwon.Markwon;
+import io.noties.markwon.image.ImagesPlugin;
 import moxy.MvpAppCompatFragment;
 import moxy.presenter.InjectPresenter;
 import moxy.presenter.ProvidePresenter;
@@ -101,7 +103,12 @@ public class ArticleFragment extends MvpAppCompatFragment implements ArticleView
 
     @Override
     public void showArticle(UiArticle uiArticle) {
-        textView.setText(uiArticle.translations.get(0).versions.get(0).text);
+//        textView.setText(uiArticle.translations.get(0).versions.get(0).text);
+        final Markwon markwon = Markwon.builder(textView.getContext())
+                .usePlugin(ImagesPlugin.create())
+                .build();
+        markwon.setMarkdown(textView, uiArticle.translations.get(0).versions.get(0).text);
+
         toolbar.setTitle(uiArticle.translations.get(0).title);
         translationContainer.removeAllViews();
         for (UiTranslation translation : uiArticle.translations) {
@@ -109,7 +116,7 @@ public class ArticleFragment extends MvpAppCompatFragment implements ArticleView
                     R.layout.view_translation_language, translationContainer, false
             );
             view.setImageResource(Util.getFlagByLangId(translation.langId));
-            view.setOnClickListener(view1 -> textView.setText(translation.versions.get(0).text));
+            view.setOnClickListener(view1 -> markwon.setMarkdown(textView,translation.versions.get(0).text));
             translationContainer.addView(view);
         }
     }
