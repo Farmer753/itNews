@@ -9,13 +9,15 @@ import javax.inject.Inject;
 import io.reactivex.rxjava3.core.Single;
 import ru.dpwg.itnews.domain.CommentRepository;
 import ru.dpwg.itnews.domain.NwComment;
+import ru.dpwg.itnews.domain.article.ui.CommentApi;
 import ru.dpwg.itnews.domain.user.NwAuthority;
 import ru.dpwg.itnews.domain.user.NwUser;
 
 public class CommentRepositoryImpl implements CommentRepository {
-
+    private CommentApi commentApi;
     @Inject
-    public CommentRepositoryImpl() {
+    public CommentRepositoryImpl(CommentApi commentApi) {
+        this.commentApi = commentApi;
     }
 
     @Override
@@ -51,19 +53,20 @@ public class CommentRepositoryImpl implements CommentRepository {
 
     @Override
     public Single<List<NwComment>> loadComment(int offset, int limit, int id) {
-        return Single.create(emitter -> {
-            Thread.sleep(2000);
-            Random random = new Random();
-            if (random.nextBoolean()) {
-                List<NwComment> commentList = new ArrayList<>();
-                for (int i = 0; i < limit; i++) {
-                    commentList.add(generateComment(i + offset));
-                }
-                emitter.onSuccess(commentList);
-            } else {
-                emitter.onError(new IllegalStateException("сообщение об ошибке"));
-            }
-        });
+//        return Single.create(emitter -> {
+//            Thread.sleep(2000);
+//            Random random = new Random();
+//            if (random.nextBoolean()) {
+//                List<NwComment> commentList = new ArrayList<>();
+//                for (int i = 0; i < limit; i++) {
+//                    commentList.add(generateComment(i + offset));
+//                }
+//                emitter.onSuccess(commentList);
+//            } else {
+//                emitter.onError(new IllegalStateException("сообщение об ошибке"));
+//            }
+//        });
+        return commentApi.loadComments(limit, offset, id);
     }
 
     private NwComment generateComment(int id) {
