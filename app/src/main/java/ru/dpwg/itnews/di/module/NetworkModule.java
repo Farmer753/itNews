@@ -2,6 +2,7 @@ package ru.dpwg.itnews.di.module;
 
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.dpwg.itnews.domain.article.ArticleApi;
@@ -10,7 +11,10 @@ import toothpick.config.Module;
 
 public class NetworkModule extends Module {
     public NetworkModule() {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(logging)
                 .build();
         Retrofit retrofit = new Retrofit.Builder()
                 .client(okHttpClient)
