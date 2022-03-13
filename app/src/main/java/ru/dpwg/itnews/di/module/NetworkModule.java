@@ -5,6 +5,7 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.dpwg.itnews.domain.article.ArticleApi;
+import ru.dpwg.itnews.domain.article.ui.CommentApi;
 import toothpick.config.Module;
 
 public class NetworkModule extends Module {
@@ -19,5 +20,7 @@ public class NetworkModule extends Module {
                 .build();
         ArticleApi articleApi = retrofit.create(ArticleApi.class);
         bind(ArticleApi.class).toInstance(articleApi);
+        CommentApi commentApi = retrofit.create(CommentApi.class);
+        bind(CommentApi.class).toInstance(commentApi);
     }
 }
