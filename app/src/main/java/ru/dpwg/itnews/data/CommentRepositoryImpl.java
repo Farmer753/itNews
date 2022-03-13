@@ -69,19 +69,19 @@ public class CommentRepositoryImpl implements CommentRepository {
         return commentApi.loadComments(limit, offset, id);
     }
 
-    private NwComment generateComment(int id) {
-        NwComment nwComment = new NwComment();
-
-        nwComment.id = id;
-        nwComment.text = "комментарий" + id;
-        nwComment.authorId = 2;
-        nwComment.articleId = id;
-        nwComment.created = "2022-02-04T16:14:00.000Z";
-
-        NwUser nwUser = new NwUser();
-        nwComment.author = nwUser;
-        nwUser.avatar = "https://lh3.googleusercontent.com/a-/AOh14Gj3ukh3ZjYqzHljegP2jYkCm0FF3w0zSAFa9lVD=s96-c";
-        nwUser.fullName = "Людмила Шевчук";
-        return nwComment;
-    }
+//    private NwComment generateComment(int id) {
+//        NwComment nwComment = new NwComment();
+//
+//        nwComment.id = id;
+//        nwComment.text = "комментарий" + id;
+//        nwComment.authorId = 2;
+//        nwComment.articleId = id;
+//        nwComment.created = "2022-02-04T16:14:00.000Z";
+//
+//        NwUser nwUser = new NwUser();
+//        nwComment.author = nwUser;
+//        nwUser.avatar = "https://lh3.googleusercontent.com/a-/AOh14Gj3ukh3ZjYqzHljegP2jYkCm0FF3w0zSAFa9lVD=s96-c";
+//        nwUser.fullName = "Людмила Шевчук";
+//        return nwComment;
+//    }
 }

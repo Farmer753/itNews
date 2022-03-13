@@ -118,7 +118,7 @@ public class CommentPresenter extends MvpPresenter<CommentView> {
                                 comments.addAll(nwComments);
                             }
                             Timber.d("Текст комментария" + nwComments);
-                            getViewState().showComments(nwComments);
+                            getViewState().showComments(comments);
                         },
                         error -> {
                             Timber.e(error);
