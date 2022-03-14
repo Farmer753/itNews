@@ -11,7 +11,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import moxy.MvpPresenter;
 import ru.dpwg.itnews.Screens;
-import ru.dpwg.itnews.domain.SessionRepository;
+import ru.dpwg.itnews.domain.session.SessionRepository;
 import ru.dpwg.itnews.mvp.view.LoginView;
 import timber.log.Timber;
 

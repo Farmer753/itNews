@@ -2,20 +2,16 @@ package ru.dpwg.itnews.mvp.presenter;
 
 import com.github.terrakok.cicerone.Router;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Inject;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import moxy.MvpPresenter;
 import ru.dpwg.itnews.Screens;
-import ru.dpwg.itnews.domain.SessionRepository;
+import ru.dpwg.itnews.domain.session.SessionRepository;
 import ru.dpwg.itnews.domain.article.ArticleRepository;
 import ru.dpwg.itnews.domain.article.DbArticleConverter;
 import ru.dpwg.itnews.domain.article.UiArticleConverter;
-import ru.dpwg.itnews.domain.article.nw.NwArticle;
 import ru.dpwg.itnews.domain.article.ui.UiArticle;
 import ru.dpwg.itnews.mvp.view.ArticleListView;
 import timber.log.Timber;

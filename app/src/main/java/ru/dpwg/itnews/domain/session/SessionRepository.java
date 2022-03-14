@@ -1,4 +1,4 @@
-package ru.dpwg.itnews.domain;
+package ru.dpwg.itnews.domain.session;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
