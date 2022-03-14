@@ -17,7 +17,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import ru.dpwg.itnews.domain.article.ArticleApi;
 import ru.dpwg.itnews.domain.article.ui.CommentApi;
 import ru.dpwg.itnews.domain.session.LoginApi;
+import ru.dpwg.itnews.domain.session.SessionRepository;
+import ru.dpwg.itnews.domain.session.TokenResponse;
+import ru.dpwg.itnews.domain.user.UserApi;
+import toothpick.Toothpick;
 import toothpick.config.Module;
+
+import static ru.dpwg.itnews.di.Di.APP_SCOPE;
 
 public class NetworkModule extends Module {
     public NetworkModule() {
@@ -69,5 +75,67 @@ public class NetworkModule extends Module {
                 .build();
         LoginApi loginApi = authRetrofit.create(LoginApi.class);
         bind(LoginApi.class).toInstance(loginApi);
+        @SuppressWarnings("Convert2Lambda")
+        Interceptor expiredAccessTokenInterceptor = new Interceptor() {
+            @NotNull
+            @Override
+            public Response intercept(@NotNull Chain chain) throws IOException {
+                Request request = chain.request();
+                Response response = chain.proceed(request);
+                System.out.println("status code: " + response.code());
+                if (response.code() == 401) {
+                    SessionRepository sessionRepository = Toothpick
+                            .openScope(APP_SCOPE)
+                            .getInstance(SessionRepository.class);
+                    LoginApi authApi = Toothpick
+                            .openScope(APP_SCOPE)
+                            .getInstance(LoginApi.class);
+                    String refreshToken = sessionRepository.getRefreshToken();
+                    TokenResponse tokenResponse = authApi
+                            .refreshToken(refreshToken, "refresh_token")
+                            .blockingGet();
+                    sessionRepository.saveRefreshToken(tokenResponse.refreshToken);
+                    sessionRepository.saveAccessToken(tokenResponse.accessToken);
+                    Request newRequest = chain
+                            .request()
+                            .newBuilder()
+                            .header("Authorization", "Bearer " + sessionRepository.getAccessToken())
+                            .build();
+                    response.close();
+                    response = chain.proceed(newRequest);
+                }
+                return response;
+            }
+        };
+        @SuppressWarnings("Convert2Lambda")
+        Interceptor addAccessTokenInterceptor = new Interceptor() {
+            @NotNull
+            @Override
+            public Response intercept(@NotNull Chain chain) throws IOException {
+                SessionRepository sessionRepository = Toothpick
+                        .openScope(APP_SCOPE)
+                        .getInstance(SessionRepository.class);
+                Request.Builder requestBuilder = chain.request().newBuilder();
+                if (sessionRepository.getAccessToken()  != null){
+                    requestBuilder = requestBuilder
+                            .header("Authorization", "Bearer " + sessionRepository.getAccessToken());
+                }
+                return chain.proceed(requestBuilder.build());
+            }
+        };
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(addAccessTokenInterceptor)
+                .addInterceptor(expiredAccessTokenInterceptor)
+                .addInterceptor(logging)
+                .build();
+        Retrofit userRetrofit = new Retrofit.Builder()
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                .baseUrl("https://dont-play-with-google.com:8443/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build();
+        UserApi userApi = userRetrofit.create(UserApi.class);
+        bind(UserApi.class).toInstance(userApi);
+
     }
 }
