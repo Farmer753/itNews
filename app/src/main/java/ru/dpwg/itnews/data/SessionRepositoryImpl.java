@@ -4,42 +4,44 @@ import android.content.SharedPreferences;
 
 import com.jakewharton.rxrelay3.BehaviorRelay;
 
-import java.util.Random;
-
 import javax.inject.Inject;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
-import ru.dpwg.itnews.domain.SessionRepository;
-import ru.dpwg.itnews.domain.TokenResponse;
+import ru.dpwg.itnews.domain.session.LoginApi;
+import ru.dpwg.itnews.domain.session.SessionRepository;
+import ru.dpwg.itnews.domain.session.TokenResponse;
 
 public class SessionRepositoryImpl implements SessionRepository {
 
     private SharedPreferences sharedPreferences;
     private BehaviorRelay<Boolean> loginState;
+    private LoginApi loginApi;
 
 
     @Inject
-    public SessionRepositoryImpl(SharedPreferences sharedPreferences) {
+    public SessionRepositoryImpl(SharedPreferences sharedPreferences, LoginApi loginApi) {
         this.sharedPreferences = sharedPreferences;
+        this.loginApi = loginApi;
         loginState = BehaviorRelay.createDefault(getAccessToken() != null);
     }
 
     @Override
     public Single<TokenResponse> login(String email, String password) {
-        return Single.create(emitter -> {
-            Thread.sleep(2000);
-            TokenResponse tokenResponse = new TokenResponse();
-            tokenResponse.accessToken = "строчка accessToken";
-            tokenResponse.refreshToken = "строчка refreshToken";
-            Random random = new Random();
-            if (random.nextBoolean()) {
-                emitter.onSuccess(tokenResponse);
-            } else {
-                emitter.onError(new IllegalStateException("сообщение об ошибке"));
-            }
-
-        });
+//        return Single.create(emitter -> {
+//            Thread.sleep(2000);
+//            TokenResponse tokenResponse = new TokenResponse();
+//            tokenResponse.accessToken = "строчка accessToken";
+//            tokenResponse.refreshToken = "строчка refreshToken";
+//            Random random = new Random();
+//            if (random.nextBoolean()) {
+//                emitter.onSuccess(tokenResponse);
+//            } else {
+//                emitter.onError(new IllegalStateException("сообщение об ошибке"));
+//            }
+//
+//        });
+        return loginApi.token(email, password,"password");
     }
 
     @Override

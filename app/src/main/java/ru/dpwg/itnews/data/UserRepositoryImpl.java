@@ -6,7 +6,6 @@ import java.util.Random;
 import javax.inject.Inject;
 
 import io.reactivex.rxjava3.core.Single;
-import ru.dpwg.itnews.domain.TokenResponse;
 import ru.dpwg.itnews.domain.user.NwAuthority;
 import ru.dpwg.itnews.domain.user.NwUser;
 import ru.dpwg.itnews.domain.user.UserRepository;

@@ -13,7 +13,7 @@ import moxy.MvpPresenter;
 import ru.dpwg.itnews.Screens;
 import ru.dpwg.itnews.domain.CommentRepository;
 import ru.dpwg.itnews.domain.NwComment;
-import ru.dpwg.itnews.domain.SessionRepository;
+import ru.dpwg.itnews.domain.session.SessionRepository;
 import ru.dpwg.itnews.mvp.view.CommentView;
 import timber.log.Timber;
 

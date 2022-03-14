@@ -5,7 +5,7 @@ import ru.dpwg.itnews.data.CommentRepositoryImpl;
 import ru.dpwg.itnews.data.SessionRepositoryImpl;
 import ru.dpwg.itnews.data.UserRepositoryImpl;
 import ru.dpwg.itnews.domain.CommentRepository;
-import ru.dpwg.itnews.domain.SessionRepository;
+import ru.dpwg.itnews.domain.session.SessionRepository;
 import ru.dpwg.itnews.domain.article.ArticleRepository;
 import ru.dpwg.itnews.domain.user.UserRepository;
 import toothpick.config.Module;
