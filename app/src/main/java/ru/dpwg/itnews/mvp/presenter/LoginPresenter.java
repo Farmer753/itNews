@@ -57,7 +57,7 @@ public class LoginPresenter extends MvpPresenter<LoginView> {
                 .doOnEvent((tokenResponse, throwable) -> getViewState().showProgress(false))
                 .subscribe(
                         tokenResponse -> {
-                            Timber.d(tokenResponse.accessToken);
+                            Timber.d("tokenResponse.accessToken %s", tokenResponse.accessToken);
                             sessionRepository.saveAccessToken(tokenResponse.accessToken);
                             sessionRepository.saveRefreshToken(tokenResponse.refreshToken);
                             router.replaceScreen(new Screens.ProfileScreen());
