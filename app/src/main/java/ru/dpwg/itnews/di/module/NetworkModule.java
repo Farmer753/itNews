@@ -20,6 +20,7 @@ import ru.dpwg.itnews.domain.session.LoginApi;
 import ru.dpwg.itnews.domain.session.SessionRepository;
 import ru.dpwg.itnews.domain.session.TokenResponse;
 import ru.dpwg.itnews.domain.user.UserApi;
+import timber.log.Timber;
 import toothpick.Toothpick;
 import toothpick.config.Module;
 
@@ -75,6 +76,7 @@ public class NetworkModule extends Module {
                 .build();
         LoginApi loginApi = authRetrofit.create(LoginApi.class);
         bind(LoginApi.class).toInstance(loginApi);
+//        UserApi
         @SuppressWarnings("Convert2Lambda")
         Interceptor expiredAccessTokenInterceptor = new Interceptor() {
             @NotNull
@@ -116,6 +118,7 @@ public class NetworkModule extends Module {
                         .openScope(APP_SCOPE)
                         .getInstance(SessionRepository.class);
                 Request.Builder requestBuilder = chain.request().newBuilder();
+                Timber.d("AccessToken %s", sessionRepository.getAccessToken());
                 if (sessionRepository.getAccessToken()  != null){
                     requestBuilder = requestBuilder
                             .header("Authorization", "Bearer " + sessionRepository.getAccessToken());
@@ -136,6 +139,6 @@ public class NetworkModule extends Module {
                 .build();
         UserApi userApi = userRetrofit.create(UserApi.class);
         bind(UserApi.class).toInstance(userApi);
-
+//UserApi END
     }
 }

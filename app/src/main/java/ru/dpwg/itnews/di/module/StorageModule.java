@@ -20,7 +20,7 @@ public class StorageModule extends Module {
                 .toInstance(PreferenceManager.getDefaultSharedPreferences(context));
         ItNewsDatabase itNewsDatabase = Room.databaseBuilder(
                 context, ItNewsDatabase.class, "it_news_database"
-        ).allowMainThreadQueries().build();
+        ).build();
         bind(ArticleDao.class).toInstance(itNewsDatabase.getArticleDao());
         bind(DbArticleConverter.class).to(DbArticleConverter.class);
         bind(UiArticleConverter.class).to(UiArticleConverter.class);
