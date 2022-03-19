@@ -81,6 +81,7 @@ public class CommentPresenter extends MvpPresenter<CommentView> {
                         nwComment -> {
                             Timber.d("Текст комментария отправлен");
                             getViewState().showMessage("комментарий отправлен");
+                            loadComment(0);
                         },
                         error -> {
                             Timber.e(error);
