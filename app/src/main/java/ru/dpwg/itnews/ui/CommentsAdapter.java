@@ -13,10 +13,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.dpwg.itnews.R;
-import ru.dpwg.itnews.domain.NwComment;
+import ru.dpwg.itnews.domain.comment.NwComment;
 
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
 

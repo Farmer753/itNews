@@ -11,8 +11,8 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import moxy.MvpPresenter;
 import ru.dpwg.itnews.Screens;
-import ru.dpwg.itnews.domain.CommentRepository;
-import ru.dpwg.itnews.domain.NwComment;
+import ru.dpwg.itnews.domain.comment.CommentRepository;
+import ru.dpwg.itnews.domain.comment.NwComment;
 import ru.dpwg.itnews.domain.session.SessionRepository;
 import ru.dpwg.itnews.mvp.view.CommentView;
 import timber.log.Timber;
@@ -72,7 +72,7 @@ public class CommentPresenter extends MvpPresenter<CommentView> {
 
     public void sendClick() {
         Timber.d("send comment " + commentText);
-        commentRepository.add(id, commentText)
+        commentRepository.addComment(id, commentText)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgress(true))

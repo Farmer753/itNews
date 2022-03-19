@@ -15,7 +15,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.dpwg.itnews.domain.article.ArticleApi;
-import ru.dpwg.itnews.domain.article.ui.CommentApi;
+import ru.dpwg.itnews.domain.comment.CommentApi;
 import ru.dpwg.itnews.domain.session.LoginApi;
 import ru.dpwg.itnews.domain.session.SessionRepository;
 import ru.dpwg.itnews.domain.session.TokenResponse;
@@ -41,8 +41,6 @@ public class NetworkModule extends Module {
                 .build();
         ArticleApi articleApi = retrofit.create(ArticleApi.class);
         bind(ArticleApi.class).toInstance(articleApi);
-        CommentApi commentApi = retrofit.create(CommentApi.class);
-        bind(CommentApi.class).toInstance(commentApi);
 
         Interceptor authAddAccessTokenInterceptor = new Interceptor() {
             @NotNull
@@ -139,6 +137,8 @@ public class NetworkModule extends Module {
                 .build();
         UserApi userApi = userRetrofit.create(UserApi.class);
         bind(UserApi.class).toInstance(userApi);
+        CommentApi commentApi = userRetrofit.create(CommentApi.class);
+        bind(CommentApi.class).toInstance(commentApi);
 //UserApi END
     }
 }

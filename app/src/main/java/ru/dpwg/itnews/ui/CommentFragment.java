@@ -26,7 +26,7 @@ import moxy.presenter.InjectPresenter;
 import moxy.presenter.ProvidePresenter;
 import ru.dpwg.itnews.R;
 import ru.dpwg.itnews.di.Di;
-import ru.dpwg.itnews.domain.NwComment;
+import ru.dpwg.itnews.domain.comment.NwComment;
 import ru.dpwg.itnews.mvp.presenter.CommentPresenter;
 import ru.dpwg.itnews.mvp.view.CommentView;
 import ru.dpwg.itnews.ui.util.EndlessRecyclerViewScrollListener;
