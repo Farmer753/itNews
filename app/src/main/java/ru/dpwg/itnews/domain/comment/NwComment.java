@@ -1,4 +1,4 @@
-package ru.dpwg.itnews.domain;
+package ru.dpwg.itnews.domain.comment;
 
 import ru.dpwg.itnews.domain.user.NwUser;
 
