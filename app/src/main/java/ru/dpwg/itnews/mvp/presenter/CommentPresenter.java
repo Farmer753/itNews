@@ -82,6 +82,7 @@ public class CommentPresenter extends MvpPresenter<CommentView> {
                             Timber.d("Текст комментария отправлен");
                             getViewState().showMessage("комментарий отправлен");
                             loadComment(0);
+                            getViewState().clearCommentInput();
                         },
                         error -> {
                             Timber.e(error);

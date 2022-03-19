@@ -41,4 +41,7 @@ public interface CommentView extends MvpView{
     @AddToEndSingle
     void showSwipeRefreshLayout(boolean show);
 
+    @AddToEndSingle
+    void clearCommentInput();
+
 }

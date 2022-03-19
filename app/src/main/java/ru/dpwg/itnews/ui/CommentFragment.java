@@ -30,6 +30,7 @@ import ru.dpwg.itnews.domain.comment.NwComment;
 import ru.dpwg.itnews.mvp.presenter.CommentPresenter;
 import ru.dpwg.itnews.mvp.view.CommentView;
 import ru.dpwg.itnews.ui.util.EndlessRecyclerViewScrollListener;
+import ru.dpwg.itnews.ui.util.KeyboardUtil;
 import timber.log.Timber;
 import toothpick.Toothpick;
 
@@ -115,7 +116,10 @@ public class CommentFragment extends MvpAppCompatFragment implements CommentView
         });
         buttonLogin.setOnClickListener(v -> presenter.onLoginClick());
         sendComment = view.findViewById(R.id.sendComment);
-        sendComment.setOnClickListener(v -> presenter.sendClick());
+        sendComment.setOnClickListener(v -> {
+            presenter.sendClick();
+            KeyboardUtil.hideKeyboardFrom(getContext(), commentEditText);
+        });
     }
 
     @Override
@@ -176,6 +180,11 @@ public class CommentFragment extends MvpAppCompatFragment implements CommentView
     @Override
     public void showSwipeRefreshLayout(boolean show) {
         swipeRefreshLayout.setRefreshing(show);
+    }
+
+    @Override
+    public void clearCommentInput() {
+        commentEditText.setText(null);
     }
 
     @Override
