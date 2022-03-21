@@ -8,12 +8,15 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import moxy.MvpPresenter;
 import ru.dpwg.itnews.Screens;
 import ru.dpwg.itnews.domain.comment.CommentRepository;
 import ru.dpwg.itnews.domain.comment.NwComment;
 import ru.dpwg.itnews.domain.session.SessionRepository;
+import ru.dpwg.itnews.domain.user.NwAuthority;
+import ru.dpwg.itnews.domain.user.UserRepository;
 import ru.dpwg.itnews.mvp.view.CommentView;
 import timber.log.Timber;
 
@@ -21,22 +24,24 @@ public class CommentPresenter extends MvpPresenter<CommentView> {
 
     private Router router;
     private SessionRepository sessionRepository;
-    private int id;
+    private int idArticle;
     private String commentText;
     private CommentRepository commentRepository;
     private List<NwComment> comments = new ArrayList<>();
+    private UserRepository userRepository;
 
     final static int LIMIT = 10;
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdArticle(int idArticle) {
+        this.idArticle = idArticle;
     }
 
     @Inject
-    public CommentPresenter(Router router, SessionRepository sessionRepository, CommentRepository commentRepository) {
+    public CommentPresenter(Router router, SessionRepository sessionRepository, CommentRepository commentRepository, UserRepository userRepository) {
         this.router = router;
         this.sessionRepository = sessionRepository;
         this.commentRepository = commentRepository;
+        this.userRepository = userRepository;
     }
 
     public void onBackClick() {
@@ -46,7 +51,7 @@ public class CommentPresenter extends MvpPresenter<CommentView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        Timber.d(id + "");
+        Timber.d(idArticle + "");
         loadComment(0);
         sessionRepository.loginState().subscribe(isLogined -> {
             getViewState().showButtonLogin(!isLogined);
@@ -72,7 +77,7 @@ public class CommentPresenter extends MvpPresenter<CommentView> {
 
     public void sendClick() {
         Timber.d("send comment " + commentText);
-        commentRepository.addComment(id, commentText)
+        commentRepository.addComment(idArticle, commentText)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgress(true))
@@ -92,7 +97,7 @@ public class CommentPresenter extends MvpPresenter<CommentView> {
     }
 
     public void loadComment(int offset) {
-        commentRepository.loadComment(offset, LIMIT, id)
+        commentRepository.loadComment(offset, LIMIT, idArticle)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> {
@@ -128,6 +133,40 @@ public class CommentPresenter extends MvpPresenter<CommentView> {
                             if (offset == 0) {
                                 getViewState().showButtonRetry(true);
                             }
+                        }
+                );
+    }
+
+    public void onDeleteCommentClick(NwComment comment) {
+        userRepository.loadUser()
+                .flatMap(nwUser -> {
+                    if (nwUser.id == comment.authorId){
+                        return commentRepository.deleteComment(comment.id);
+                    } else {
+                        boolean isAdmin = false;
+                        for (NwAuthority nwAuthority:nwUser.authorities){
+                            if (nwAuthority.authority.equals("ADMIN")){
+                                isAdmin = true;
+                                break;
+                            }
+                        }
+                        if (isAdmin){
+                           return commentRepository.deleteComment(comment.id);
+                        } else {
+                            return Single.error(new IllegalStateException("Вы не автор и не админ!"));
+                        }
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        nwUser -> {
+                            getViewState().showMessage("Комментарий удален");
+                            loadComment(0);
+                        },
+                        throwable -> {
+                            Timber.e(throwable);
+                            getViewState().showMessage(throwable.getMessage());
                         }
                 );
     }

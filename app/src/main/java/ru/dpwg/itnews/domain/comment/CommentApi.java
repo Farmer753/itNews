@@ -2,10 +2,12 @@ package ru.dpwg.itnews.domain.comment;
 
 import java.util.List;
 import io.reactivex.rxjava3.core.Single;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import ru.dpwg.itnews.domain.comment.NwComment;
 
@@ -23,4 +25,6 @@ public interface CommentApi {
             @Field("articleId") int articleId,
             @Field("text") String text
     );
+    @DELETE("comment/delete/{id}")
+    Single<Boolean> deleteComment(@Path("id") int idComment);
 }

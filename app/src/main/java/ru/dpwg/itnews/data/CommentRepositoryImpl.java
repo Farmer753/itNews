@@ -1,17 +1,13 @@
 package ru.dpwg.itnews.data;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import javax.inject.Inject;
 
 import io.reactivex.rxjava3.core.Single;
+import ru.dpwg.itnews.domain.comment.CommentApi;
 import ru.dpwg.itnews.domain.comment.CommentRepository;
 import ru.dpwg.itnews.domain.comment.NwComment;
-import ru.dpwg.itnews.domain.comment.CommentApi;
-import ru.dpwg.itnews.domain.user.NwAuthority;
-import ru.dpwg.itnews.domain.user.NwUser;
 
 public class CommentRepositoryImpl implements CommentRepository {
     private CommentApi commentApi;
@@ -29,5 +25,11 @@ public class CommentRepositoryImpl implements CommentRepository {
     public Single<List<NwComment>> loadComment(int offset, int limit, int id) {
         return commentApi.loadComments(limit, offset, id);
     }
+
+    @Override
+    public Single<Boolean> deleteComment(int idComment) {
+        return commentApi.deleteComment(idComment);
+    }
+
 
 }

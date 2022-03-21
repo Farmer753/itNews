@@ -26,7 +26,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHo
     }
 
     public interface ArticleClickListener{
-        public void onClick (UiArticle article);
+        void onClick(UiArticle article);
     }
 
 

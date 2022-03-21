@@ -55,7 +55,7 @@ public class CommentFragment extends MvpAppCompatFragment implements CommentView
     CommentPresenter getPresenter() {
         CommentPresenter cPresenter = Toothpick.openScope(Di.APP_SCOPE).getInstance(CommentPresenter.class);
         int id = getArguments().getInt("id");
-        cPresenter.setId(id);
+        cPresenter.setIdArticle(id);
         return cPresenter;
     }
 
@@ -80,7 +80,7 @@ public class CommentFragment extends MvpAppCompatFragment implements CommentView
         swipeRefreshLayout.setOnRefreshListener(() -> presenter.loadComment(0));
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new CommentsAdapter();
+        adapter = new CommentsAdapter(comment -> presenter.onDeleteCommentClick(comment));
         recyclerView.setAdapter(adapter);
         buttonRetry = view.findViewById(R.id.buttonRetry);
         buttonRetry.setOnClickListener(v -> presenter.loadComment(0));

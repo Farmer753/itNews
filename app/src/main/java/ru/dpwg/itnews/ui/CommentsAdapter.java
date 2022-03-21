@@ -15,11 +15,22 @@ import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
 import ru.dpwg.itnews.R;
+import ru.dpwg.itnews.domain.article.ui.UiArticle;
 import ru.dpwg.itnews.domain.comment.NwComment;
 
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
 
     private final List<NwComment> comments = new ArrayList<>();
+
+    public interface DeleteClickListener {
+        void onClick(NwComment comment);
+    }
+
+    private CommentsAdapter.DeleteClickListener clickListener;
+
+    public CommentsAdapter(DeleteClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
 
     @NotNull
     @Override
@@ -37,6 +48,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         Glide.with(holder.iconImageView)
                 .load(comments.get(position).author.avatar)
                 .into(holder.iconImageView);
+        holder.deleteImageView.setOnClickListener(view -> clickListener.onClick(comments.get(position)));
     }
 
     @Override
@@ -55,6 +67,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         public TextView userNameTextView;
         public TextView dateTextView;
         public TextView commentTextView;
+        public ImageView deleteImageView;
 
         ViewHolder(View view) {
             super(view);
@@ -62,6 +75,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
             userNameTextView = view.findViewById(R.id.userNameTextView);
             dateTextView = view.findViewById(R.id.dateTextView);
             commentTextView = view.findViewById(R.id.commentTextView);
+            deleteImageView = view.findViewById(R.id.deleteImageView);
         }
     }
 }

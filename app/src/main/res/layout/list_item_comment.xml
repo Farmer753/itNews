@@ -20,7 +20,7 @@
         android:id="@+id/userNameTextView"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iconImageView"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/deleteImageView"
         tools:text="Имя юзера имя имя имя имя Имя юзера имя имя имя имя"
         android:layout_marginStart="16dp"/>
 
@@ -30,7 +30,7 @@
         android:id="@+id/dateTextView"
         app:layout_constraintTop_toBottomOf="@+id/userNameTextView"
         app:layout_constraintStart_toEndOf="@+id/iconImageView"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/deleteImageView"
         tools:text="10.02.2022"
         android:layout_marginStart="16dp"/>
 
@@ -51,4 +51,13 @@
         android:layout_marginTop="16dp"
         tools:text="Текст комментария много слов много словмного словмного словмного словмного словмного словмного словмного словмного словмного словмного словмного словмного слов"/>
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:id="@+id/deleteImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_baseline_delete_24"
+        android:background="?selectableItemBackgroundBorderless"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
