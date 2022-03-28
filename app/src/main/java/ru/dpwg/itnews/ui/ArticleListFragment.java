@@ -1,5 +1,7 @@
 package ru.dpwg.itnews.ui;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,9 +15,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -29,14 +34,21 @@ import ru.dpwg.itnews.domain.article.ui.UiArticle;
 import ru.dpwg.itnews.mvp.presenter.ArticleListPresenter;
 import ru.dpwg.itnews.mvp.view.ArticleListView;
 import ru.dpwg.itnews.ui.util.EndlessRecyclerViewScrollListener;
+import ru.dpwg.itnews.ui.util.NotificationUtil;
 import timber.log.Timber;
 import toothpick.Toothpick;
+
+import static android.content.Context.NOTIFICATION_SERVICE;
+import static ru.dpwg.itnews.di.Di.APP_SCOPE;
 
 public class ArticleListFragment extends MvpAppCompatFragment implements ArticleListView {
     @InjectPresenter
     ArticleListPresenter presenter;
 
     ArticlesAdapter adapter;
+
+    @Inject
+    NotificationUtil notificationUtil;
 
     Toolbar toolbar;
     View progressView;
@@ -46,9 +58,14 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
 
     @ProvidePresenter
     ArticleListPresenter getPresenter() {
-        return Toothpick.openScope(Di.APP_SCOPE).getInstance(ArticleListPresenter.class);
+        return Toothpick.openScope(APP_SCOPE).getInstance(ArticleListPresenter.class);
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Toothpick.openScope(APP_SCOPE).inject(this);
+    }
     @Nullable
     @Override
     public View onCreateView(
@@ -80,7 +97,20 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
         toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.profile) {
                 Timber.d("Профиль нажат");
-                presenter.profileClick();
+//                presenter.profileClick();
+                NotificationManager notificationManager =
+                        (NotificationManager) getContext().getSystemService(NOTIFICATION_SERVICE);
+                NotificationCompat.Builder builder = notificationUtil.getBuilder();
+
+                builder.setSmallIcon(R.mipmap.ic_launcher)
+                        .setContentTitle("Title")
+                        .setContentText("Уведомление")
+                        .setPriority(2);
+
+                Notification notification = builder.build();
+
+
+                notificationManager.notify(1, notification);
             }
             return false;
         });
