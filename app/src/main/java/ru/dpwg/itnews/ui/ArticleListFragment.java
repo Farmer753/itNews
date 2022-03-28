@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -24,10 +25,17 @@ import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 import moxy.MvpAppCompatFragment;
 import moxy.presenter.InjectPresenter;
 import moxy.presenter.ProvidePresenter;
 import ru.dpwg.itnews.R;
+import ru.dpwg.itnews.domain.GetArticlesWorker;
 import ru.dpwg.itnews.di.Di;
 import ru.dpwg.itnews.domain.article.nw.NwArticle;
 import ru.dpwg.itnews.domain.article.ui.UiArticle;
@@ -98,19 +106,20 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
             if (item.getItemId() == R.id.profile) {
                 Timber.d("Профиль нажат");
 //                presenter.profileClick();
-                NotificationManager notificationManager =
-                        (NotificationManager) getContext().getSystemService(NOTIFICATION_SERVICE);
-                NotificationCompat.Builder builder = notificationUtil.getBuilder();
 
-                builder.setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("Title")
-                        .setContentText("Уведомление")
-                        .setPriority(2);
+//                WorkRequest uploadWorkRequest =
+//                        new OneTimeWorkRequest.Builder(GetArticlesWorker.class)
+//                                .build();
 
-                Notification notification = builder.build();
+                PeriodicWorkRequest saveRequest =
+                        new PeriodicWorkRequest.Builder(GetArticlesWorker.class, 15, TimeUnit.SECONDS)
+                                // Constraints
+                                .build();
 
 
-                notificationManager.notify(1, notification);
+                WorkManager
+                        .getInstance(getContext())
+                        .enqueue(saveRequest);
             }
             return false;
         });
