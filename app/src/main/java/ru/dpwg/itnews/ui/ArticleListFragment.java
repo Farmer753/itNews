@@ -96,21 +96,7 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
         toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.profile) {
                 Timber.d("Профиль нажат");
-//                presenter.profileClick();
-
-//                WorkRequest uploadWorkRequest =
-//                        new OneTimeWorkRequest.Builder(GetArticlesWorker.class)
-//                                .build();
-
-                PeriodicWorkRequest saveRequest =
-                        new PeriodicWorkRequest.Builder(GetArticlesWorker.class, 15, TimeUnit.SECONDS)
-                                // Constraints
-                                .build();
-
-
-                WorkManager
-                        .getInstance(getContext())
-                        .enqueue(saveRequest);
+                presenter.profileClick();
             }
             return false;
         });
