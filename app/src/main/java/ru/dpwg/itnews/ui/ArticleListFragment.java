@@ -12,6 +12,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -19,24 +22,31 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 import moxy.MvpAppCompatFragment;
 import moxy.presenter.InjectPresenter;
 import moxy.presenter.ProvidePresenter;
 import ru.dpwg.itnews.R;
-import ru.dpwg.itnews.di.Di;
-import ru.dpwg.itnews.domain.article.nw.NwArticle;
+import ru.dpwg.itnews.domain.GetArticlesWorker;
 import ru.dpwg.itnews.domain.article.ui.UiArticle;
 import ru.dpwg.itnews.mvp.presenter.ArticleListPresenter;
 import ru.dpwg.itnews.mvp.view.ArticleListView;
 import ru.dpwg.itnews.ui.util.EndlessRecyclerViewScrollListener;
+import ru.dpwg.itnews.ui.util.NotificationUtil;
 import timber.log.Timber;
 import toothpick.Toothpick;
+
+import static ru.dpwg.itnews.di.Di.APP_SCOPE;
 
 public class ArticleListFragment extends MvpAppCompatFragment implements ArticleListView {
     @InjectPresenter
     ArticleListPresenter presenter;
 
     ArticlesAdapter adapter;
+
+    @Inject
+    NotificationUtil notificationUtil;
 
     Toolbar toolbar;
     View progressView;
@@ -46,7 +56,13 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
 
     @ProvidePresenter
     ArticleListPresenter getPresenter() {
-        return Toothpick.openScope(Di.APP_SCOPE).getInstance(ArticleListPresenter.class);
+        return Toothpick.openScope(APP_SCOPE).getInstance(ArticleListPresenter.class);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Toothpick.openScope(APP_SCOPE).inject(this);
     }
 
     @Nullable
