@@ -29,7 +29,7 @@ import static ru.dpwg.itnews.di.Di.APP_SCOPE;
 public class NetworkModule extends Module {
     public NetworkModule() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(logging)
                 .build();

@@ -49,9 +49,9 @@ public class GetArticlesWorker extends Worker {
                 .map(articlesResponse -> articlesResponse.articles)
                 .map(nwArticles -> new DbArticleConverter().convert(nwArticles))
                 .blockingGet();
-        Timber.d(dbArticlesFromServer + "");
+        Timber.d("dbArticlesFromServer" + dbArticlesFromServer);
         Timber.d("Работает");
-        List<DbArticle> dbArticles = (List<DbArticle>) articleDao.findAllArticlesFull();
+        List<DbArticle> dbArticles = articleDao.findAllArticlesFull().blockingFirst();
         List<DbArticle> newArticles = new ArrayList<>();
         for (DbArticle dbArticleFromServer : dbArticlesFromServer) {
             boolean contains = dbArticles.contains(dbArticleFromServer);
