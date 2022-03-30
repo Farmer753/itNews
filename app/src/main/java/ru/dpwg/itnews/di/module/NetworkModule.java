@@ -82,7 +82,7 @@ public class NetworkModule extends Module {
             public Response intercept(@NotNull Chain chain) throws IOException {
                 Request request = chain.request();
                 Response response = chain.proceed(request);
-                System.out.println("status code: " + response.code());
+                Timber.d("status code: " + response.code());
                 if (response.code() == 401) {
                     SessionRepository sessionRepository = Toothpick
                             .openScope(APP_SCOPE)
@@ -117,7 +117,7 @@ public class NetworkModule extends Module {
                         .getInstance(SessionRepository.class);
                 Request.Builder requestBuilder = chain.request().newBuilder();
                 Timber.d("AccessToken %s", sessionRepository.getAccessToken());
-                if (sessionRepository.getAccessToken()  != null){
+                if (sessionRepository.getAccessToken() != null) {
                     requestBuilder = requestBuilder
                             .header("Authorization", "Bearer " + sessionRepository.getAccessToken());
                 }

@@ -1,7 +1,5 @@
 package ru.dpwg.itnews.ui;
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,23 +19,16 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
 import moxy.MvpAppCompatFragment;
 import moxy.presenter.InjectPresenter;
 import moxy.presenter.ProvidePresenter;
 import ru.dpwg.itnews.R;
 import ru.dpwg.itnews.domain.GetArticlesWorker;
-import ru.dpwg.itnews.di.Di;
-import ru.dpwg.itnews.domain.article.nw.NwArticle;
 import ru.dpwg.itnews.domain.article.ui.UiArticle;
 import ru.dpwg.itnews.mvp.presenter.ArticleListPresenter;
 import ru.dpwg.itnews.mvp.view.ArticleListView;
@@ -46,7 +37,6 @@ import ru.dpwg.itnews.ui.util.NotificationUtil;
 import timber.log.Timber;
 import toothpick.Toothpick;
 
-import static android.content.Context.NOTIFICATION_SERVICE;
 import static ru.dpwg.itnews.di.Di.APP_SCOPE;
 
 public class ArticleListFragment extends MvpAppCompatFragment implements ArticleListView {
@@ -74,6 +64,7 @@ public class ArticleListFragment extends MvpAppCompatFragment implements Article
         super.onCreate(savedInstanceState);
         Toothpick.openScope(APP_SCOPE).inject(this);
     }
+
     @Nullable
     @Override
     public View onCreateView(

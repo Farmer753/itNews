@@ -58,9 +58,9 @@ public class DbArticleConverter {
         return dbVersion;
     }
 
-    public List<DbArticle> convert (List<NwArticle> data){
+    public List<DbArticle> convert(List<NwArticle> data) {
         List<DbArticle> dbArticles = new ArrayList<>();
-        for (NwArticle nwArticle: data){
+        for (NwArticle nwArticle : data) {
             dbArticles.add(convert(nwArticle));
         }
         return dbArticles;
